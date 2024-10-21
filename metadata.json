@@ -1,0 +1,13 @@
+{
+    "shell-version": ["46"],
+    "uuid": "gnome-stats-pro2@aldunelabs.com",
+    "extension-id": "gnome-stats-pro2",
+    "settings-schema": "org.gnome.shell.extensions.gnome-stats-pro2",
+    "gettext-domain": "gnome-stats-pro2@aldunelabs.com",
+    "original-author": "frederic.boltz@gmail.com",
+    "name": "GnomeStatsPro2",
+    "description": "System monitor showing CPU and memory usage.",
+    "url": "https://github.com/Fred78290/gnome-stats-pro2",
+    "version": 1,
+    "version-name": "1.0.0"
+}

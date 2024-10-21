@@ -1,0 +1,11 @@
+import '@girs/cairo-1.0/cairo-1.0';
+import '@girs/clutter-15';
+import '@girs/cogl-15';
+import '@girs/girepository-2.0';
+import '@girs/gjs';
+import '@girs/gjs/dom';
+import '@girs/gnome-shell/ambient';
+import '@girs/gnome-shell/extensions/global';
+import '@girs/gtop-2.0/ambient';
+import '@girs/networkmanager-1.0/ambient';
+import '@girs/nmclient-1.0/ambient';

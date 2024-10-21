@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Fred78290
+# This file is distributed under the same license as the GnomeStatsPro2 package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GnomeStatsPro2 1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-21 12:47+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/indicators/cpu.js:28 src/indicators/memory.js:17
+#: src/indicators/network.js:45 src/indicators/swap.js:15
+msgid "Current:"
+msgstr ""
+
+#: src/indicators/cpu.js:30
+msgid "Total CPU usage"
+msgstr ""
+
+#: src/indicators/memory.js:19
+msgid "Total memory usage"
+msgstr ""
+
+#: src/indicators/memory.js:22
+msgid "Total buffer usage"
+msgstr ""
+
+#: src/indicators/memory.js:25
+msgid "Total shared usage"
+msgstr ""
+
+#: src/indicators/memory.js:28
+msgid "Total cache usage"
+msgstr ""
+
+#: src/indicators/memory.js:31
+msgid "Total user usage"
+msgstr ""
+
+#: src/indicators/memory.js:34
+msgid "Total locked usage"
+msgstr ""
+
+#: src/indicators/memory.js:37
+msgid "Total free usage"
+msgstr ""
+
+#: src/indicators/memory.js:40
+msgid "Total RAM present"
+msgstr ""
+
+#: src/indicators/network.js:47 src/indicators/network.js:55
+msgid "Inbound"
+msgstr ""
+
+#: src/indicators/network.js:50 src/indicators/network.js:58
+msgid "Outbound"
+msgstr ""
+
+#: src/indicators/network.js:53
+msgid "Maximum (over 2 hours):"
+msgstr ""
+
+#: src/indicators/swap.js:17
+msgid "Total swap usage"
+msgstr ""

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gnome-stats-pro2@aldunelabs.com">
+	<schema id="org.gnome.shell.extensions.gnome-stats-pro2" path="/org/gnome/shell/extensions/gnome-stats-pro2/">
+		<key name="debug-mode" type="b">
+			<default>false</default>
+			<summary>Debug</summary>
+			<description>Enable debug mode</description>
+		</key>
+	</schema>
+</schemalist>
