@@ -33,15 +33,13 @@ export default GObject.registerClass(
 				max: this.swapInfos.total,
 				units: 'B',
 			});
+
 			this.graph.addDataSet('swap-used', 'swap-used-color');
 
 			this.dropdownLayout.attach(this.graph, 0, 0, 2, 1);
-
-			const x = 0,
-				y = 1;
-			this.dropdownLayout.attach(this.current_label, x + 0, y + 0, 2, 1);
-			this.dropdownLayout.attach(this.current_swap_label, x + 0, y + 1, 1, 1);
-			this.dropdownLayout.attach(this.current_swap_value, x + 1, y + 1, 1, 1);
+			this.dropdownLayout.attach(this.current_label, 0, 1, 2, 1);
+			this.dropdownLayout.attach(this.current_swap_label, 0, 2, 1, 1);
+			this.dropdownLayout.attach(this.current_swap_value, 1, 2, 1, 1);
 
 			this.enable();
 		}

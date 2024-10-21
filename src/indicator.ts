@@ -96,6 +96,7 @@ export default GObject.registerClass(
 			this.scale_factor = St.ThemeContext.get_for_stage(
 				Shell.Global.get().get_stage()
 			).scale_factor;
+
 			this.barPadding = this.options.barPadding * this.scale_factor;
 			this.barWidth = this.options.barWidth * this.scale_factor;
 
@@ -198,13 +199,13 @@ export default GObject.registerClass(
 				const node = this.dropdown.get_theme_node();
 				const yOffset = node.get_length('-y-offset');
 				const easeActor: any = this.dropdown;
-
 				const y = stageY + itemHeight + yOffset;
 				const x = Math.min(
 					stageX + xOffset,
 					monitor.x + monitor.width - 4 - Math.max(itemWidth, labelWidth)
 				);
 
+				this.graph?.set_width(this.dropdown.width - 24);
 				this.dropdown.set_position(x, y);
 
 				easeActor.ease({

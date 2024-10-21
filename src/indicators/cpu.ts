@@ -16,9 +16,6 @@ export default GObject.registerClass(
 		percentUseCpu: number[] = [];
 
 		constructor() {
-			const x = 0,
-				y = 1;
-
 			super('GnomeStatsPro2.CpuIndicator');
 
 			GTop.glibtop_get_cpu(this.previousCpuInfos);
@@ -54,9 +51,9 @@ export default GObject.registerClass(
 			this.graph.addDataSet('cpu-usage', 'cpu-color');
 
 			this.dropdownLayout.attach(this.graph, 0, 0, 2, 1);
-			this.dropdownLayout.attach(this.current_label, x + 0, y + 0, 2, 1);
-			this.dropdownLayout.attach(this.current_cpu_label, x + 0, y + 1, 1, 1);
-			this.dropdownLayout.attach(this.current_cpu_value, x + 1, y + 1, 1, 1);
+			this.dropdownLayout.attach(this.current_label, 0, 1, 2, 1);
+			this.dropdownLayout.attach(this.current_cpu_label, 0, 2, 1, 1);
+			this.dropdownLayout.attach(this.current_cpu_value, 1, 2, 1, 1);
 
 			this.enable();
 		}

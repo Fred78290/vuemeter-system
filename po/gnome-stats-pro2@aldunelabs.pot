@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GnomeStatsPro2 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-21 12:47+0000\n"
+"POT-Creation-Date: 2024-10-21 15:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,44 +17,44 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/indicators/cpu.js:28 src/indicators/memory.js:17
+#: src/indicators/cpu.js:27 src/indicators/memory.js:16
 #: src/indicators/network.js:45 src/indicators/swap.js:15
 msgid "Current:"
 msgstr ""
 
-#: src/indicators/cpu.js:30
+#: src/indicators/cpu.js:29
 msgid "Total CPU usage"
 msgstr ""
 
-#: src/indicators/memory.js:19
+#: src/indicators/memory.js:18
 msgid "Total memory usage"
 msgstr ""
 
-#: src/indicators/memory.js:22
+#: src/indicators/memory.js:21
 msgid "Total buffer usage"
 msgstr ""
 
-#: src/indicators/memory.js:25
+#: src/indicators/memory.js:24
 msgid "Total shared usage"
 msgstr ""
 
-#: src/indicators/memory.js:28
+#: src/indicators/memory.js:27
 msgid "Total cache usage"
 msgstr ""
 
-#: src/indicators/memory.js:31
+#: src/indicators/memory.js:30
 msgid "Total user usage"
 msgstr ""
 
-#: src/indicators/memory.js:34
+#: src/indicators/memory.js:33
 msgid "Total locked usage"
 msgstr ""
 
-#: src/indicators/memory.js:37
+#: src/indicators/memory.js:36
 msgid "Total free usage"
 msgstr ""
 
-#: src/indicators/memory.js:40
+#: src/indicators/memory.js:39
 msgid "Total RAM present"
 msgstr ""
 

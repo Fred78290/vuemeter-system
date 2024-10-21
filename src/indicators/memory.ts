@@ -27,7 +27,6 @@ export default GObject.registerClass(
 		memoryInfos = new GTop.glibtop_mem();
 
 		constructor() {
-			const offsetX = 0;
 			let offsetY = 1;
 
 			super('GnomeStatsPro2.MemoryIndicator', {
@@ -82,75 +81,39 @@ export default GObject.registerClass(
 			this.graph.addDataSet('mem-used', 'mem-used-color');
 
 			this.dropdownLayout.attach(this.graph, 0, 0, 2, 1);
-			this.dropdownLayout.attach(this.current_label, offsetX + 0, offsetY + 0, 2, 1);
+			this.dropdownLayout.attach(this.current_label, 0, offsetY + 0, 2, 1);
 
 			// used, buffer, shared, cached, slab, locked, free, total
-			this.dropdownLayout.attach(this.current_mem_used_label, offsetX + 0, offsetY + 1, 1, 1);
-			this.dropdownLayout.attach(this.current_mem_used_value, offsetX + 1, offsetY + 1, 1, 1);
-			this.dropdownLayout.attach(
-				this.current_mem_buffer_label,
-				offsetX + 0,
-				offsetY + 2,
-				1,
-				1
-			);
+			this.dropdownLayout.attach(this.current_mem_used_label, 0, offsetY + 1, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_used_value, 1, offsetY + 1, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_buffer_label, 0, offsetY + 2, 1, 1);
 
-			this.dropdownLayout.attach(
-				this.current_mem_buffer_value,
-				offsetX + 1,
-				offsetY + 2,
-				1,
-				1
-			);
+			this.dropdownLayout.attach(this.current_mem_buffer_value, 1, offsetY + 2, 1, 1);
 
-			this.dropdownLayout.attach(
-				this.current_mem_shared_label,
-				offsetX + 0,
-				offsetY + 3,
-				1,
-				1
-			);
+			this.dropdownLayout.attach(this.current_mem_shared_label, 0, offsetY + 3, 1, 1);
 
-			this.dropdownLayout.attach(
-				this.current_mem_shared_value,
-				offsetX + 1,
-				offsetY + 3,
-				1,
-				1
-			);
+			this.dropdownLayout.attach(this.current_mem_shared_value, 1, offsetY + 3, 1, 1);
 
-			this.dropdownLayout.attach(
-				this.current_mem_cached_label,
-				offsetX + 0,
-				offsetY + 4,
-				1,
-				1
-			);
+			this.dropdownLayout.attach(this.current_mem_cached_label, 0, offsetY + 4, 1, 1);
 
-			this.dropdownLayout.attach(
-				this.current_mem_cached_value,
-				offsetX + 1,
-				offsetY + 4,
-				1,
-				1
-			);
+			this.dropdownLayout.attach(this.current_mem_cached_value, 1, offsetY + 4, 1, 1);
 
 			offsetY += 5;
 
-			this.dropdownLayout.attach(this.current_mem_user_label, offsetX + 0, offsetY, 1, 1);
-			this.dropdownLayout.attach(this.current_mem_user_value, offsetX + 1, offsetY, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_user_label, 0, offsetY, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_user_value, 1, offsetY, 1, 1);
 			++offsetY;
 
-			this.dropdownLayout.attach(this.current_mem_locked_label, offsetX + 0, offsetY, 1, 1);
-			this.dropdownLayout.attach(this.current_mem_locked_value, offsetX + 1, offsetY, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_locked_label, 0, offsetY, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_locked_value, 1, offsetY, 1, 1);
 			++offsetY;
 
-			this.dropdownLayout.attach(this.current_mem_free_label, offsetX + 0, offsetY, 1, 1);
-			this.dropdownLayout.attach(this.current_mem_free_value, offsetX + 1, offsetY, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_free_label, 0, offsetY, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_free_value, 1, offsetY, 1, 1);
 			++offsetY;
 
-			this.dropdownLayout.attach(this.current_mem_total_label, offsetX + 0, offsetY, 1, 1);
-			this.dropdownLayout.attach(this.current_mem_total_value, offsetX + 1, offsetY, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_total_label, 0, offsetY, 1, 1);
+			this.dropdownLayout.attach(this.current_mem_total_value, 1, offsetY, 1, 1);
 
 			++offsetY;
 

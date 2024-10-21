@@ -94,19 +94,17 @@ export default GObject.registerClass(
 
 			this.dropdownLayout.attach(this.graph, 0, 0, 2, 1);
 
-			const x = 0,
-				y = 1;
-			this.dropdownLayout.attach(this.current_label, x + 0, y + 0, 2, 1);
-			this.dropdownLayout.attach(this.current_in_label, x + 0, y + 1, 1, 1);
-			this.dropdownLayout.attach(this.current_in_value, x + 1, y + 1, 1, 1);
-			this.dropdownLayout.attach(this.current_out_label, x + 0, y + 2, 1, 1);
-			this.dropdownLayout.attach(this.current_out_value, x + 1, y + 2, 1, 1);
+			this.dropdownLayout.attach(this.current_label, 0, 1, 2, 1);
+			this.dropdownLayout.attach(this.current_in_label, 0, 2, 1, 1);
+			this.dropdownLayout.attach(this.current_in_value, 1, 2, 1, 1);
+			this.dropdownLayout.attach(this.current_out_label, 0, 3, 1, 1);
+			this.dropdownLayout.attach(this.current_out_value, 1, 3, 1, 1);
 
-			this.dropdownLayout.attach(this.maximum_label, x + 0, y + 3, 2, 1);
-			this.dropdownLayout.attach(this.maximum_in_label, x + 0, y + 4, 1, 1);
-			this.dropdownLayout.attach(this.maximum_in_value, x + 1, y + 4, 1, 1);
-			this.dropdownLayout.attach(this.maximum_out_label, x + 0, y + 5, 1, 1);
-			this.dropdownLayout.attach(this.maximum_out_value, x + 1, y + 5, 1, 1);
+			this.dropdownLayout.attach(this.maximum_label, 0, 4, 2, 1);
+			this.dropdownLayout.attach(this.maximum_in_label, 0, 5, 1, 1);
+			this.dropdownLayout.attach(this.maximum_in_value, 1, 5, 1, 1);
+			this.dropdownLayout.attach(this.maximum_out_label, 0, 6, 1, 1);
+			this.dropdownLayout.attach(this.maximum_out_value, 1, 6, 1, 1);
 
 			this._update_iface_list();
 
