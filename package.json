@@ -22,7 +22,10 @@
         "sensor"
     ],
     "scripts": {
-        "format": "prettier --write --cache . && eslint --fix ."
+        "format": "prettier --write --cache . && eslint --fix .",
+        "compile": "./bin/compile.sh",
+        "pack": "./bin/pack.sh",
+        "test": "./bin/test.sh"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.1.0",

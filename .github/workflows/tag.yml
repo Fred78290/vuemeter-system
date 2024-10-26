@@ -1,0 +1,76 @@
+name: tag-gnome-stats-pro2
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.*[0-9]*'
+      - ci-test
+  
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  GNOME_ORG_USERNAME: ${{ secrets.GNOME_ORG_USERNAME }}
+  GNOME_ORG_PASSWORD: ${{ secrets.GNOME_ORG_PASSWORD }}
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      id: checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      id: setup-node
+      uses: actions/setup-node@v4
+      with:
+        cache: npm
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.13' 
+    - run: pip install gnome-extension-publisher
+
+    - name: Setup gnome shell
+      shell: bash
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo apt update
+        sudo apt install gnome-shell-extensions gettext -y
+
+    - run: npm install
+    - run: npm ci
+    - name: Prepare
+      id: prep
+      shell: bash
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/v}
+        METADATA=$(cat metadata.json)
+        echo "tag=v${VERSION}" >> $GITHUB_OUTPUT
+        jq --arg VERSION ${VERSION} '.|."version-name" = $VERSION' <<< "${METADATA}" > metadata.json
+        npm version --allow-same-version --no-git-tag-version ${VERSION}
+    - name: Pack
+      shell: bash
+      run: |
+        npm run pack
+
+    - name: Remove same release
+      uses: liudonghua123/delete-release-action@v1
+      with:
+        release_name: ${{ steps.prep.outputs.tag }}
+        suppress_errors: true
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ steps.prep.outputs.tag }}
+        draft: false
+        files: |
+          gnome-stats-pro2@aldunelabs.com.shell-extension.zip
+
+    - name: Publish
+      shell: bash
+      run: |
+        gep publish --file gnome-stats-pro2@aldunelabs.com.shell-extension.zip --username $GNOME_ORG_USERNAME --password $GNOME_ORG_PASSWORD
+    
