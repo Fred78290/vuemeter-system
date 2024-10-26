@@ -6,8 +6,11 @@ log_message() {
 }
 
 # Set the directory of the script as the working directory
-EXTENSION_DIR=$(dirname "$(realpath "$0")")
-cd "$EXTENSION_DIR" || { log_message "Error: Failed to change directory to $EXTENSION_DIR"; exit 1; }
+pushd $(dirname "$0")/.. >/dev/null
+EXTENSION_DIR=${PWD}
+popd >/dev/null
+
+pushd "$EXTENSION_DIR" || { log_message "Error: Failed to change directory to $EXTENSION_DIR"; exit 1; }
 
 # Create the po directory if it doesn't exist
 mkdir -p po

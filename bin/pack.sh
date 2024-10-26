@@ -11,7 +11,10 @@ log_message() {
 }
 
 # Paths and filenames
-EXTENSION_DIR=$(dirname "$0") # Assumes pack.sh is in the main directory
+pushd $(dirname "$0")/.. >/dev/null
+EXTENSION_DIR=${PWD}
+popd>/dev/null
+
 DIST_DIR="${EXTENSION_DIR}/dist"
 EXTENSION_NAME="gnome-stats-pro2@aldunelabs.com"
 
@@ -28,9 +31,9 @@ else
 fi
 
 # Run schemas.sh
-if [ -f "${EXTENSION_DIR}/schemas.sh" ]; then
+if [ -f "${EXTENSION_DIR}/bin/schemas.sh" ]; then
     log_message "Running schemas.sh..."
-    bash "${EXTENSION_DIR}/schemas.sh" || { log_message "schemas.sh failed. Aborting."; exit 1; }
+    bash "${EXTENSION_DIR}/bin/schemas.sh" || { log_message "schemas.sh failed. Aborting."; exit 1; }
 else
     log_message "schemas.sh not found. Aborting."
     exit 1
@@ -67,9 +70,9 @@ if [ $? -ne 0 ]; then
 fi
 
 # Run i18n.sh
-if [ -f "${EXTENSION_DIR}/i18n.sh" ]; then
+if [ -f "${EXTENSION_DIR}/bin/i18n.sh" ]; then
     log_message "Running i18n.sh..."
-    bash "${EXTENSION_DIR}/i18n.sh" || { log_message "i18n.sh failed. Aborting."; exit 1; }
+    bash "${EXTENSION_DIR}/bin/i18n.sh" || { log_message "i18n.sh failed. Aborting."; exit 1; }
 else
     log_message "i18n.sh not found. Aborting."
     exit 1
