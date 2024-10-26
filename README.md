@@ -1,4 +1,8 @@
-# Gnome-Stats-Pro
+# Gnome-Stats-Pro2
+
+Gnome-Stats-Pro2 is a full rewrite and port to Gnome version 46 and 47 of the [unmaintened gnome-stats-pro extension](https://github.com/tpenguin/gnome-stats-pro) from Thralling Penguin .
+
+## As the original
 
 Miss programs only available on the Mac? So do we. Here's an extension
 for GNOME that brings easy visualization of system resources such as:
@@ -13,24 +17,55 @@ display of historical utilizations.
 
 ## Requirements
 
--   libgtop
-    -   Ubuntu 17.04 users should install the `gir1.2-gtop-2.0` package.
+gnome-stats-pro2 use gtop and you need to install the `libgtop` package.
+
+Here is a non-exhaustive list of how to install `libgtop` on some popular Linux distributions:
+
+### Ubuntu/Debian
+
+```bash
+sudo apt install gir1.2-gtop-2.0
+```
+
+### Fedora
+
+```bash
+sudo dnf install libgtop2-devel
+```
+
+### Arch / Manjaro
+
+```bash
+sudo pacman -Syu libgtop
+```
+
+### openSUSE
+
+```bash
+sudo zypper install libgtop-devel
+```
+
+### NixOS
+
+On NixOS, you may need to add the following to your `configuration.nix`:
+
+```nix
+environment.variables = {
+    GI_TYPELIB_PATH = "/run/current-system/sw/lib/girepository-1.0";
+};
+environment.systemPackages = with pkgs; [
+    libgtop
+];
+```
 
 ## How to Download
 
--   [Gnome-Stats-Pro](https://extensions.gnome.org/extension/1043/gnomestatspro/) is available on GNOME's Extension Repository.
--   [Gnome-Stats-Pro](https://github.com/tpenguin/gnome-stats-pro) is available on GitHub.
--   [Gnome-Stats-Pro](http://cgit.benden.us/cgit.cgi/gnome-stats-pro/) is also available locally on this server, in case the others are non-functional.
-
-## Known Bugs
-
--   libgtop has a bug with memory usage with Linux. This is fixed within
-    libgtop's master branch at commit c33623c0 from 2015-07-14.
+-   [Gnome-Stats-Pro2](https://extensions.gnome.org/extension/1043/gnomestatspro2/) is available on GNOME's Extension Repository.
+-   [Gnome-Stats-Pro2](https://github.com/Fred78290/gnome-stats-pro2) is available on GitHub.
 
 ## Support
 
-Support is available through the GitHub project page
-[here](https://github.com/tpenguin/gnome-stats-pro/issues).
+Support is available through the GitHub project page [here](https://github.com/Fred78290/gnome-stats-pro2/issues).
 
 Please note this is a open-source, community project, and thus
 no guarantees on response time is implied.
@@ -42,6 +77,6 @@ improvements.
 
 ## License
 
-**Gnome Stats Pro** is an open-source project and is licensed under
+**Gnome Stats Pro2** is an open-source project and is licensed under
 the GPL version 2 or higher. For more information on how this project
 is licensed, see the included `LICENSE.md` file.
