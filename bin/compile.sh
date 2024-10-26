@@ -1,4 +1,8 @@
 #!/bin/bash
+CURDIR=$(dirname $0)
+
+export PATH=$PATH:${CURDIR}/../node_modules
+
 clear
 
 # Function to log messages
