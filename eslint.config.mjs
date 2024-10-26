@@ -22,6 +22,8 @@ export default [
             '**/package-lock.json',
             '**/pnpm-lock.yaml',
             '**/build',
+            '**/dist',
+            'original.js',
         ],
     },
     ...compat.extends('eslint:recommended', 'plugin:@typescript-eslint/recommended'),

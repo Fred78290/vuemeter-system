@@ -1,4 +1,9 @@
-export type Color = { red: number; green: number; blue: number; alpha: number };
+export type Color = {
+	red: number;
+	green: number;
+	blue: number;
+	alpha: number;
+};
 
 export interface Dictionary<T> {
 	[key: string]: T;
@@ -26,14 +31,20 @@ Number.prototype.formatMetricPretty = function (units?: string) {
 };
 
 export class Constantes {
-	static DEFAULT_CAIRO_COLOR: Color = { red: 0, green: 0, blue: 0, alpha: 255 };
-	static DEFAULT_GRID_COLOR: Color = { red: 87, green: 87, blue: 87, alpha: 154 };
-	static DEFAULT_STATS_COLOR: Color = { red: 0, green: 190, blue: 240, alpha: 255 };
-	static INDICATOR_UPDATE_INTERVAL = 250;
-	static INDICATOR_NUM_GRID_LINES = 3;
-	static ITEM_LABEL_SHOW_TIME = 0.15;
-	static ITEM_LABEL_HIDE_TIME = 0.1;
-	static ITEM_HOVER_TIMEOUT = 300;
+	static readonly RED = { red: 1, green: 0, blue: 0, alpha: 1 };
+	static readonly GREEN = { red: 0, green: 1, blue: 0, alpha: 1 };
+	static readonly BLUE = { red: 0, green: 0, blue: 1, alpha: 1 };
+	static readonly BLACK: Color = { red: 0, green: 0, blue: 0, alpha: 1.0 };
+	static readonly WHITE: Color = { red: 1, green: 1, blue: 1, alpha: 1.0 };
+
+	static readonly DEFAULT_GRID_COLOR: Color = { red: 0.34, green: 0.34, blue: 0.34, alpha: 0.6 };
+	static readonly DEFAULT_STATS_COLOR: Color = { red: 0, green: 0.74, blue: 0.94, alpha: 1.0 };
+
+	static readonly INDICATOR_UPDATE_INTERVAL = 250;
+	static readonly INDICATOR_NUM_GRID_LINES = 8;
+	static readonly ITEM_LABEL_SHOW_TIME = 0.15;
+	static readonly ITEM_LABEL_HIDE_TIME = 0.1;
+	static readonly ITEM_HOVER_TIMEOUT = 300;
 }
 
 export const globalSettingsKeys = [

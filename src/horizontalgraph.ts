@@ -5,6 +5,7 @@ import GObject from 'gi://GObject';
 import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Color, Constantes, Dictionary } from './types.js';
+import Utils from './utils.js';
 
 class GraphOverlay {
 	label: St.Label = new St.Label({ style_class: 'label' });
@@ -31,51 +32,53 @@ export type HorizontalGraphOptions = {
 	units: string;
 	gridColor: string;
 	autoscale: boolean;
+	fillAll: boolean;
 	showMax: boolean;
 	max: number;
 };
 
 export const DEFAULT_HORIZONTAL_GRAPH_OPTIONS = {
 	updateInterval: Constantes.INDICATOR_UPDATE_INTERVAL,
-	offsetX: 2,
-	offsetY: -1,
+	offsetX: 5,
+	offsetY: 3,
 	units: '',
 	gridColor: 'grid-color',
 	autoscale: true,
 	showMax: true,
+	fillAll: false,
 	max: 0,
 };
 
-class HorizontalGraphStat {
-	color = '';
-	cairo_color = Constantes.DEFAULT_CAIRO_COLOR;
-	values: number[] = [];
-	scaled: number[] = [];
-	max = -1;
-
-	constructor(color: string) {
-		this.color = color;
-	}
-}
+type HorizontalGraphStat = {
+	color: string;
+	cairo_color: Color;
+	values: number[];
+	scaled: number[];
+	max: number;
+};
 
 export default GObject.registerClass(
 	class HorizontalGraph extends St.Bin {
-		timeout = 0;
-		graphoverlay = new GraphOverlay();
-		gridColor = Constantes.DEFAULT_GRID_COLOR;
-		max = -1;
-		options = DEFAULT_HORIZONTAL_GRAPH_OPTIONS;
-		ready = true;
-		renderStats: string[] = [];
-		stats: Dictionary<HorizontalGraphStat> = {};
-		styleChanged = false;
-		graph: St.DrawingArea = new St.DrawingArea({
+		private timeout = 0;
+		private graphoverlay = new GraphOverlay();
+		private gridColor = Constantes.DEFAULT_GRID_COLOR;
+		private max = -1;
+		private options = DEFAULT_HORIZONTAL_GRAPH_OPTIONS;
+		private ready = true;
+		private renderStats: string[] = [];
+		private stats: Dictionary<HorizontalGraphStat> = {};
+		private styleChanged = false;
+		private drawing_area: St.DrawingArea = new St.DrawingArea({
 			reactive: true,
+			xExpand: true,
+			yExpand: true,
+			xAlign: Clutter.ActorAlign.FILL,
+			yAlign: Clutter.ActorAlign.FILL,
 		});
 
-		constructor(options?: HorizontalGraphOptions | any) {
+		constructor(name: string, options?: HorizontalGraphOptions | any) {
 			super({
-				style_class: 'gsp-graph-area',
+				style_class: 'gsp-color gsp-graph-area',
 				reactive: true,
 				trackHover: true,
 				x_expand: true,
@@ -84,21 +87,23 @@ export default GObject.registerClass(
 				yAlign: Clutter.ActorAlign.FILL,
 			});
 
+			this.name = name;
+
 			if (options) {
 				this.options = { ...this.options, ...options };
 			}
 
-			this.graph.connect('repaint', this.draw.bind(this));
+			this.drawing_area.connect('repaint', this.repaint.bind(this));
 
-			this.add_child(this.graph);
+			this.add_child(this.drawing_area);
 			this.connect('style-changed', this.updateStyles.bind(this));
 
 			this.timeout = GLib.timeout_add(
 				GLib.PRIORITY_DEFAULT,
 				this.options.updateInterval,
 				() => {
-					if (this.graph.visible) {
-						this.graph.queue_repaint();
+					if (this.ready) {
+						this.drawing_area.queue_repaint();
 					}
 
 					return true;
@@ -111,15 +116,13 @@ export default GObject.registerClass(
 			}
 		}
 
-		public enable() {
-			this.ready = true;
-		}
+		public enable() {}
 
-		public disable() {
-			this.ready = false;
-		}
+		public disable() {}
 
 		public destroy() {
+			Utils.debug(`HorizontalGraph::destroy ${this.name}`);
+
 			this.ready = false;
 
 			if (this.timeout !== 0) {
@@ -132,7 +135,13 @@ export default GObject.registerClass(
 
 		public addDataSet(name: string, color: string) {
 			this.renderStats.push(name);
-			this.stats[name] = new HorizontalGraphStat(color);
+			this.stats[name] = {
+				color: color,
+				cairo_color: this.lookupColor(color, Constantes.DEFAULT_STATS_COLOR),
+				values: [],
+				scaled: [],
+				max: -1,
+			};
 		}
 
 		public addDataPoint(name: string, value: number) {
@@ -171,44 +180,22 @@ export default GObject.registerClass(
 			}
 		}
 
+		private lookupColor(name: string, defaultColor: Color): Color {
+			return Utils.lookupColor(this, name, defaultColor);
+		}
+
 		private updateStyles() {
-			if (false === this.is_mapped()) return;
+			if (this.is_mapped()) {
+				// get and cache the grid color
+				this.gridColor = this.lookupColor(this.options.gridColor, this.gridColor);
 
-			// get and cache the grid color
-			const themeNode = this.get_theme_node();
-			const [hasGridColor, gridColor] = themeNode.lookup_color(this.options.gridColor, false);
+				this.renderStats.map(k => {
+					const stat = this.stats[k];
+					stat.cairo_color = this.lookupColor(stat.color, Constantes.DEFAULT_STATS_COLOR);
 
-			if (hasGridColor) {
-				this.gridColor = {
-					red: gridColor.red,
-					blue: gridColor.blue,
-					green: gridColor.green,
-					alpha: gridColor.alpha,
-				};
+					return k;
+				});
 			}
-
-			this.renderStats.map(k => {
-				const stat = this.stats[k];
-				const [hasStatColor, statColor] = themeNode.lookup_color(stat.color, false);
-
-				if (hasStatColor) {
-					stat.cairo_color = {
-						red: statColor.red,
-						blue: statColor.blue,
-						green: statColor.green,
-						alpha: statColor.alpha,
-					};
-				} else {
-					stat.cairo_color = {
-						red: 0,
-						green: 190,
-						blue: 240,
-						alpha: 255,
-					};
-				}
-
-				return k;
-			});
 		}
 
 		// Used to draws major/minor division lines within the graph.
@@ -230,29 +217,24 @@ export default GObject.registerClass(
 			cr.stroke();
 		}
 
-		private draw() {
+		private repaint(area: St.DrawingArea) {
+			const [width, height] = area.get_surface_size();
+			const cr: Cairo.Context = area.get_context() as Cairo.Context;
+			const gridOffset = Math.floor(height / (Constantes.INDICATOR_NUM_GRID_LINES + 1));
+
 			if (
-				this.ready === false ||
+				!this.ready ||
 				Main.overview.visibleTarget ||
 				!this.get_stage() ||
-				!this.visible
+				!this.visible ||
+				!cr
 			)
 				return;
-
-			const area = this.graph;
-			const [width, height] = area.get_surface_size();
-			const context: any = area.get_context();
-			const cr: Cairo.Context = context;
 
 			if (!this.styleChanged) {
 				this.updateStyles();
 				this.styleChanged = true;
 			}
-
-			if (!cr) return;
-
-			//draw the background grid
-			const gridOffset = Math.floor(height / (Constantes.INDICATOR_NUM_GRID_LINES + 1));
 
 			// draws major divisions
 			this.drawGridLines(
@@ -311,25 +293,26 @@ export default GObject.registerClass(
 				return k;
 			});
 
-			let first = false;
+			for (let index = this.renderStats.length - 1; index >= 0; index--) {
+				const stat = this.stats[this.renderStats[index]];
+				const outlineColor = this.lookupColor(stat.color, stat.cairo_color);
 
-			for (const key of this.renderStats) {
-				const stat = this.stats[key];
-				const outlineColor = stat.cairo_color;
+				/*Utils.debug(
+					`HorizontalGraph::repaint->${this.name}, name:${stat.color} red: ${outlineColor.red}, blue: ${outlineColor.blue}, green: ${outlineColor.green}, alpha:${outlineColor.alpha}`
+				);*/
 
 				if (this.max <= 0.00001) {
 					continue;
 				}
 
-				if (!first) {
+				if (index === 0 || this.options.fillAll) {
 					// Render the first dataset's fill
-					first = true;
-
 					this.plotDataSet(cr, height, stat.scaled);
 
 					cr.lineTo(stat.scaled.length - 1, height);
 					cr.lineTo(0, height);
 					cr.closePath();
+
 					cr.setSourceRGBA(
 						outlineColor.red,
 						outlineColor.green,
@@ -364,14 +347,14 @@ export default GObject.registerClass(
 			}
 		}
 
-		setOverlayPosition(x: number, y: number) {
+		public setOverlayPosition(x: number, y: number) {
 			this.graphoverlay.actor.set_position(
-				x + this.options.offsetX,
-				y + this.options.offsetY
+				x + 12 + this.options.offsetX,
+				y + 12 + this.options.offsetY
 			);
 		}
 
-		show() {
+		public show() {
 			this.ready = true;
 			this.graphoverlay.actor.show();
 			this.graphoverlay.actor.opacity = 0;
@@ -383,11 +366,15 @@ export default GObject.registerClass(
 				time: Constantes.ITEM_LABEL_SHOW_TIME,
 				transition: Clutter.AnimationMode.EASE_OUT_QUAD,
 			});
+
+			super.show();
 		}
 
-		hide() {
+		public hide() {
 			this.ready = false;
 			this.graphoverlay.actor.hide();
+
+			super.hide();
 		}
 	}
 );

@@ -10,12 +10,14 @@ import GnomeStatsProContainer from './src/container.js';
 
 export default class GnomeStatsProExtension extends Extension {
     private timeout: number = 0;
-    container?: InstanceType<typeof GnomeStatsProContainer>;
+    private container?: InstanceType<typeof GnomeStatsProContainer>;
 
     constructor(metadatas: ExtensionMetadata) {
         super(metadatas);
 
         this.initTranslations('gnome-stats-pro2@aldunelabs.com');
+
+        Utils.init(this, metadatas, this.getSettings());
     }
 
     public enable(): void {
@@ -23,15 +25,17 @@ export default class GnomeStatsProExtension extends Extension {
 
         // Startup delay to allow the initialization of the monitors
         // avoiding graphical glitches / empty widgets
-        this.timeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, () => {
-            if (this.container) {
-                this.container.place(this.uuid);
-            }
+        if (this.timeout === 0) {
+            this.timeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, () => {
+                if (this.container) {
+                    this.container.place(this.uuid);
+                }
 
-            this.timeout = 0;
+                this.timeout = 0;
 
-            return false;
-        });
+                return false;
+            });
+        }
     }
 
     public disable(): void {

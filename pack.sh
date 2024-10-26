@@ -101,6 +101,7 @@ cd "$DIST_DIR"
 # Pack the extension
 gnome-extensions pack --force \
     --podir=./po \
+    --schema=./schemas/gschemas.compiled \
     --extra-source=./src \
     --extra-source=./icons \
     --extra-source=./LICENSE.md \

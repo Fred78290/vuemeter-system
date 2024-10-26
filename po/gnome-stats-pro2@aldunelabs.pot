@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GnomeStatsPro2 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-21 15:14+0000\n"
+"POT-Creation-Date: 2024-10-26 13:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,59 +17,75 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/indicators/cpu.js:27 src/indicators/memory.js:16
-#: src/indicators/network.js:45 src/indicators/swap.js:15
+#: src/indicators/cpu.js:17 src/indicators/memory.js:17
+#: src/indicators/network.js:42 src/indicators/swap.js:24
 msgid "Current:"
 msgstr ""
 
-#: src/indicators/cpu.js:29
+#: src/indicators/cpu.js:25
+msgid "User CPU usage"
+msgstr ""
+
+#: src/indicators/cpu.js:38
+msgid "System CPU usage"
+msgstr ""
+
+#: src/indicators/cpu.js:51
 msgid "Total CPU usage"
 msgstr ""
 
-#: src/indicators/memory.js:18
+#: src/indicators/memory.js:25
 msgid "Total memory usage"
 msgstr ""
 
-#: src/indicators/memory.js:21
+#: src/indicators/memory.js:38
 msgid "Total buffer usage"
 msgstr ""
 
-#: src/indicators/memory.js:24
+#: src/indicators/memory.js:51
 msgid "Total shared usage"
 msgstr ""
 
-#: src/indicators/memory.js:27
+#: src/indicators/memory.js:64
 msgid "Total cache usage"
 msgstr ""
 
-#: src/indicators/memory.js:30
+#: src/indicators/memory.js:77
 msgid "Total user usage"
 msgstr ""
 
-#: src/indicators/memory.js:33
+#: src/indicators/memory.js:90
 msgid "Total locked usage"
 msgstr ""
 
-#: src/indicators/memory.js:36
+#: src/indicators/memory.js:103
 msgid "Total free usage"
 msgstr ""
 
-#: src/indicators/memory.js:39
+#: src/indicators/memory.js:116
 msgid "Total RAM present"
 msgstr ""
 
-#: src/indicators/network.js:47 src/indicators/network.js:55
+#: src/indicators/network.js:50 src/indicators/network.js:84
 msgid "Inbound"
 msgstr ""
 
-#: src/indicators/network.js:50 src/indicators/network.js:58
+#: src/indicators/network.js:63 src/indicators/network.js:97
 msgid "Outbound"
 msgstr ""
 
-#: src/indicators/network.js:53
+#: src/indicators/network.js:76
 msgid "Maximum (over 2 hours):"
 msgstr ""
 
-#: src/indicators/swap.js:17
+#: src/indicators/swap.js:32
 msgid "Total swap usage"
+msgstr ""
+
+#: src/indicators/swap.js:45
+msgid "Pagein swap usage"
+msgstr ""
+
+#: src/indicators/swap.js:58
+msgid "Pageout swap usage"
 msgstr ""

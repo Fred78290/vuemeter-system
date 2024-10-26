@@ -1,3 +1,37 @@
+.gsp-color {
+    grid-color: rgba(111, 111, 111, 0.8);
+
+    cpu-color: rgba(99, 189, 246, 1);
+    cpu-total-color: rgba(99, 189, 246, 1);
+    cpu-user-color: rgba(10, 216, 68, 1);
+    cpu-sys-color: rgba(255, 20, 20, 1);
+
+    mem-user-color: rgba(10, 216, 68, 1);
+    mem-cached-color: rgba(90, 90, 40, 1);
+    mem-locked-color: rgba(255, 20, 20, 1);
+    mem-used-color: rgba(99, 189, 246, 1);
+    mem-free-color: rgba(240, 190, 0, 1);
+    mem-buffer-color: rgba(240, 85, 0, 1);
+    mem-shared-color: rgba(220, 0, 240, 1);
+    mem-total-color: white;
+
+    swap-used-warn-color: rgba(240, 190, 0, 1);
+    swap-used-bad-color: rgba(240, 85, 0, 1);
+
+    swap-used-color: rgba(99, 189, 246, 1);
+    swap-pagein-color: rgba(10, 216, 68, 1);
+    swap-pageout-color: rgba(255, 20, 20, 1);
+
+    network-in-color: rgba(10, 216, 68, 1);
+    network-out-color: rgba(255, 20, 20, 1);
+
+    network-max-in-color: rgba(216, 202, 10, 1);
+    network-max-out-color: rgba(4, 0, 240, 1);
+
+    network-warn-color: rgba(240, 190, 0, 1);
+    network-bad-color: rgba(240, 85, 0, 1);
+}
+
 .gsp-header {
     padding: 0;
     margin: 0;
@@ -13,33 +47,10 @@
 
 .gsp-graph-area {
     background-color: #1e1e1e;
-    border-radius: 2px;
+    border-radius: 0.2em;
     border: 1px solid #575757;
     height: 96px;
-    width: 100%;
-
-    grid-color: #5757579a;
-
-    cpu-color: rgb(0, 190, 240);
-    cpu-total-color: rgb(0, 154, 62);
-    cpu-user-color: rgb(69, 154, 0);
-    cpu-sys-color: rgb(255, 253, 81);
-    cpu-iowait-color: rgb(210, 148, 0);
-
-    mem-user-color: rgb(210, 148, 0);
-    mem-cached-color: rgb(90, 90, 40);
-    mem-other-color: rgb(205, 203, 41);
-
-    mem-used-color: rgb(0, 190, 240);
-    mem-used-warn-color: rgb(240, 190, 0);
-    mem-used-bad-color: rgb(240, 85, 0);
-
-    swap-used-color: rgb(0, 190, 240);
-    swap-used-warn-color: rgb(240, 190, 0);
-    swap-used-bad-color: rgb(240, 85, 0);
-
-    network-in-color: rgb(0, 190, 240);
-    network-out-color: rgb(242, 0, 124);
+    width: 360px;
 }
 
 .gsp-graph-overlay .label {
@@ -49,32 +60,10 @@
 }
 
 .gsp-indicator {
-    background-color: #1e1e1e;
-    border-radius: 2px;
-    width: 8px;
-
-    grid-color: #5757579a;
-
-    cpu-color: rgb(0, 190, 240);
-    cpu-total-color: rgb(0, 154, 62);
-    cpu-user-color: rgb(69, 154, 0);
-    cpu-sys-color: rgb(255, 253, 81);
-    cpu-iowait-color: rgb(210, 148, 0);
-
-    mem-user-color: rgb(210, 148, 0);
-    mem-cached-color: rgb(90, 90, 40);
-    mem-other-color: rgb(205, 203, 41);
-    mem-used-color: rgb(0, 190, 240);
-    mem-used-warn-color: rgb(240, 190, 0);
-    mem-used-bad-color: rgb(240, 85, 0);
-
-    swap-used-color: rgb(0, 190, 240);
-    swap-used-warn-color: rgb(240, 190, 0);
-    swap-used-bad-color: rgb(240, 85, 0);
-
-    network-ok-color: rgb(0, 190, 240);
-    network-warn-color: rgb(240, 190, 0);
-    network-bad-color: rgb(240, 85, 0);
+    background-color: rgba(30, 30, 30, 0.4);
+    border-radius: 0.2em;
+    border: solid 1px #333;
+    width: 10px;
 }
 
 .gsp-dropdown {
@@ -99,7 +88,87 @@
 .gsp-dropdown .value_label {
     color: rgba(255, 255, 255, 0.695);
     text-align: right;
-    width: 128px;
+    width: 108px;
+}
+
+.gsp-dropdown .color_label {
+    border-color: rgba(255, 255, 255, 0.695);
+    border-width: 1px;
+    margin-right: 3px;
+    width: 11px;
+    height: 8px;
+}
+
+.bg-cpu-total-color {
+    background-color: rgba(99, 189, 246, 1);
+}
+
+.bg-cpu-user-color {
+    background-color: rgba(10, 216, 68, 1);
+}
+
+.bg-cpu-sys-color {
+    background-color: rgba(255, 20, 20, 1);
+}
+
+.bg-swap-used-color {
+    background-color: rgba(99, 189, 246, 1);
+}
+
+.bg-swap-pagein-color {
+    background-color: rgba(10, 216, 68, 1);
+}
+
+.bg-swap-pageout-color {
+    background-color: rgba(255, 20, 20, 1);
+}
+
+.bg-network-in-color {
+    background-color: rgba(10, 216, 68, 1);
+}
+
+.bg-network-out-color {
+    background-color: rgba(255, 20, 20, 1);
+}
+
+.bg-network-max-in-color {
+    background-color: rgba(216, 202, 10, 1);
+}
+
+.bg-network-max-out-color {
+    background-color: rgba(4, 0, 240, 1);
+}
+
+.bg-mem-user-color {
+    background-color: rgba(10, 216, 68, 1);
+}
+
+.bg-mem-cached-color {
+    background-color: rgba(90, 90, 40, 1);
+}
+
+.bg-mem-locked-color {
+    background-color: rgba(255, 20, 20, 1);
+}
+
+.bg-mem-used-color {
+    background-color: rgba(99, 189, 246, 1);
+}
+
+.bg-mem-free-color {
+    background-color: rgba(240, 190, 0, 1);
+}
+
+.bg-mem-buffer-color {
+    background-color: rgba(240, 85, 0, 1);
+}
+
+.bg-mem-shared-color {
+    background-color: rgb(220, 0, 240);
+}
+
+.bg-mem-total-color {
+    background-color: white;
 }
 
 .gsp-dropdown .title_label {

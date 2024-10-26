@@ -9,6 +9,7 @@ import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import HorizontalGraph from './horizontalgraph.js';
 import { Color, Constantes, Dictionary } from './types.js';
+import Utils from './utils.js';
 
 export type IndicatorOptions = {
 	updateInterval: number;
@@ -21,17 +22,44 @@ export type IndicatorOptions = {
 export const DEFAULT_OPTIONS: IndicatorOptions = {
 	updateInterval: Constantes.INDICATOR_UPDATE_INTERVAL,
 	barPadding: 1,
-	barWidth: 6,
+	barWidth: 8,
 	gridColor: 'grid-color',
 	decay: 0.2,
 };
 
+export type IndicatorStatValue = {
+	visible: boolean;
+	value: number;
+	color: string;
+	cairo_color: Color;
+};
+
+export type IndicatorStatValues = {
+	values: IndicatorStatValue[];
+};
+
+export type IndicatorStatCombined = number | IndicatorStatValues;
+
 export type IndicatorStat = {
 	color: string;
 	cairo_color: Color;
-	values: number[];
-	scaled: number[];
+	values: IndicatorStatCombined[];
 	max: number;
+};
+
+export type PopupDataset = {
+	name: string;
+	label: string;
+	color: Color;
+	header: boolean;
+	vue_meter: boolean;
+	registre: string;
+};
+
+type RenderingStatElement = {
+	color: Color;
+	cairo_color: Color;
+	value: number;
 };
 
 export default GObject.registerClass(
@@ -58,7 +86,7 @@ export default GObject.registerClass(
 				reactive: true,
 				canFocus: true,
 				trackHover: true,
-				styleClass: 'panel-button gsp-header',
+				styleClass: 'panel-button gsp-color gsp-header',
 				accessibleName: name,
 				accessibleRole: Atk.Role.MENU,
 				layoutManager: new Clutter.BinLayout(),
@@ -102,11 +130,11 @@ export default GObject.registerClass(
 
 			// create UI elements
 			this.drawing_area.connect('repaint', this.repaint.bind(this));
-			this.drawing_area.connect('button-press-event', this.showSystemMonitor.bind(this));
 
 			this.box.add_child(this.drawing_area);
 			this.box.connect('notify::visible', this.onVisibilityChanged.bind(this));
-			this.box.connect('style-changed', this._updateStyles.bind(this));
+			this.box.connect('style-changed', this.updateStyles.bind(this));
+			this.box.connect('button-press-event', this.showSystemMonitor.bind(this));
 
 			this.dropdownLayout = new Clutter.GridLayout();
 			this.dropdown = new St.Widget({
@@ -126,14 +154,23 @@ export default GObject.registerClass(
 			this.renderStats.push(name);
 			this.stats[name] = {
 				color: color,
-				cairo_color: Constantes.DEFAULT_STATS_COLOR,
+				cairo_color: this.lookupColor(color, Constantes.DEFAULT_STATS_COLOR),
 				values: [],
-				scaled: [],
 				max: -1,
 			};
 		}
 
-		protected addDataPoint(name: string, value: number) {
+		protected addDataPointWithColor(
+			name: string,
+			value: number | IndicatorStatCombined,
+			color: string
+		) {
+			this.stats[name].color = color;
+			this.stats[name].cairo_color = this.lookupColor(color, this.stats[name].cairo_color);
+			this.stats[name].values.push(value);
+		}
+
+		protected addDataPoint(name: string, value: number | IndicatorStatCombined) {
 			this.stats[name].values.push(value);
 		}
 
@@ -143,24 +180,29 @@ export default GObject.registerClass(
 			}
 		}
 
+		private resize() {
+			this.box.set_width(
+				this.renderStats.length * (this.barWidth + this.barPadding) + 1 /*+
+					this.barPadding * 2.0 -
+					1*/
+			);
+
+			this.resized = true;
+		}
+
 		public enable() {
 			this.graph?.enable();
 
 			this._updateValues();
+			this.resize();
 
-			this.box.set_width(
-				this.renderStats.length * (this.barWidth + this.barPadding) +
-					this.barPadding * 2.0 -
-					1
-			);
-
-			this.resized = true;
-
-			this.timeout = GLib.timeout_add(
-				GLib.PRIORITY_DEFAULT,
-				this.options.updateInterval,
-				this._updateValues.bind(this)
-			);
+			if (this.timeout === 0) {
+				this.timeout = GLib.timeout_add(
+					GLib.PRIORITY_DEFAULT,
+					this.options.updateInterval,
+					this._updateValues.bind(this)
+				);
+			}
 		}
 
 		public disable() {
@@ -214,8 +256,7 @@ export default GObject.registerClass(
 					transition: Clutter.AnimationMode.EASE_OUT_QUAD,
 					onComplete: () => {
 						if (this.graph) {
-							const [x1, y1] = this.graph.get_position();
-							this.graph.setOverlayPosition(x + x1, y + y1);
+							this.graph.setOverlayPosition(x, y);
 							this.graph.show();
 						}
 					},
@@ -230,20 +271,22 @@ export default GObject.registerClass(
 			return true;
 		}
 
-		private _updateStyles() {
-			this.updateStyles();
-		}
-
 		private showSystemMonitor(): boolean {
-			let app = Shell.AppSystem.get_default().lookup_app('gnome-system-monitor.desktop');
+			const appSys = Shell.AppSystem.get_default();
+			const systemMonitorSignature = [
+				'org.gnome.SystemMonitor.desktop',
+				'gnome-system-monitor.desktop',
+				'gnome-system-monitor_gnome-system-monitor.desktop',
+			];
 
-			if (app === undefined || app === null) {
-				app = Shell.AppSystem.get_default().lookup_app(
-					'gnome-system-monitor_gnome-system-monitor.desktop'
-				);
+			for (const signature of systemMonitorSignature) {
+				const app = appSys.lookup_app(signature);
+
+				if (app) {
+					app.activate();
+					break;
+				}
 			}
-
-			app.open_new_window(-1);
 
 			return Clutter.EVENT_PROPAGATE;
 		}
@@ -267,7 +310,10 @@ export default GObject.registerClass(
 		}
 
 		public destroy() {
+			Utils.debug(`Indicator::destroy ${this.name}`);
+
 			if (this.timeout !== 0) {
+				Utils.debug(`Indicator::destroy ${this.name}, clear timeout`);
 				GLib.source_remove(this.timeout);
 				this.timeout = 0;
 			}
@@ -278,90 +324,66 @@ export default GObject.registerClass(
 			super.destroy();
 		}
 
+		protected lookupColor(name: string, defaultColor: Color): Color {
+			return Utils.lookupColor(this, name, defaultColor);
+		}
+
 		protected updateValues() {}
 
 		protected updateStyles() {
-			if (!this.box.is_mapped()) return;
+			if (this.box.is_mapped()) {
+				// get and cache the grid color
+				this.gridColor = this.lookupColor(this.options.gridColor, this.gridColor);
 
-			/*           let [width, height] = this.drawing_area.get_size();
+				this.renderStats.map(k => {
+					const stat = this.stats[k];
 
-					   this.drawing_area.set_width(width * this.scale_factor);
-					   this.drawing_area.set_height(height * this.scale_factor);*/
+					stat.cairo_color = this.lookupColor(stat.color, stat.cairo_color);
 
-			// get and cache the grid color
-			const themeNode = this.box.get_theme_node();
-			const [hasGridColor, gridColor] = themeNode.lookup_color(this.options.gridColor, false);
+					for (const value of stat.values) {
+						if (typeof value !== 'number') {
+							const indicatorStatValues = value as IndicatorStatValues;
 
-			if (hasGridColor) {
-				this.gridColor = {
-					red: gridColor.red,
-					blue: gridColor.blue,
-					green: gridColor.green,
-					alpha: gridColor.alpha,
-				};
+							for (const indicatorStatValue of indicatorStatValues.values) {
+								indicatorStatValue.cairo_color = this.lookupColor(
+									indicatorStatValue.color,
+									indicatorStatValue.cairo_color
+								);
+							}
+						}
+					}
+
+					return k;
+				});
 			}
-
-			this.renderStats.map(k => {
-				const stat = this.stats[k];
-				const [hasStatColor, statColor] = themeNode.lookup_color(stat.color, false);
-
-				if (hasStatColor) {
-					stat.cairo_color = {
-						red: statColor.red,
-						blue: statColor.blue,
-						green: statColor.green,
-						alpha: statColor.alpha,
-					};
-				}
-
-				return k;
-			});
 		}
 
-		private repaint() {
-			if (Main.overview.visibleTarget) {
-				return;
-			}
+		private repaint(area: St.DrawingArea) {
+			const cr: Cairo.Context = area.get_context() as Cairo.Context;
 
-			if (!this.box.get_stage()) {
-				return;
-			}
-
-			if (!this.box.visible) {
-				return;
-			}
-
-			const context: any = this.drawing_area.get_context();
-			const cr: Cairo.Context = context;
-
-			if (!cr) {
+			if (Main.overview.visibleTarget || !this.box.get_stage() || !this.box.visible || !cr) {
 				return;
 			}
 
 			if (!this.styleCached) {
-				this._updateStyles();
+				this.updateStyles();
 				this.styleCached = true;
 			}
 
 			//resize container based on number of bars to chart
 			if (!this.resized) {
-				this.box.set_width(
-					this.renderStats.length * (this.barWidth + this.barPadding) +
-						this.barPadding * 2.0 -
-						1
-				);
-				this.resized = true;
+				this.resize();
 			}
 
 			//repaint the background grid
-			const [width, height] = this.drawing_area.get_surface_size();
-			const gridOffset = Math.floor(height / (Constantes.INDICATOR_NUM_GRID_LINES + 2));
+			const [width, height] = area.get_surface_size();
+			const gridOffset = Math.floor(height / Constantes.INDICATOR_NUM_GRID_LINES + 2);
 
-			for (let i = 0; i <= Constantes.INDICATOR_NUM_GRID_LINES + 2; ++i) {
-				//cr.moveTo(0, i * gridOffset + .5);
-				//cr.lineTo(width, i * gridOffset + .5);
-				cr.moveTo(0, i * gridOffset);
-				cr.lineTo(width, i * gridOffset);
+			for (let i = 1; i <= Constantes.INDICATOR_NUM_GRID_LINES + 2; i++) {
+				const y = i * gridOffset;
+
+				cr.moveTo(0, y);
+				cr.lineTo(width + 2, y);
 			}
 
 			cr.setSourceRGBA(
@@ -370,8 +392,15 @@ export default GObject.registerClass(
 				this.gridColor.blue,
 				this.gridColor.alpha
 			);
+
+			cr.setAntialias(Cairo.Antialias.NONE);
 			cr.setLineWidth(1);
-			cr.setDash([2, 1], 0);
+
+			if (this.renderStats.length > 1) {
+				cr.setDash([this.barWidth, this.barPadding], 0);
+			} else {
+				cr.setDash([], 0);
+			}
 			cr.stroke();
 
 			// Make sure we don't have more sample points than pixels
@@ -389,55 +418,127 @@ export default GObject.registerClass(
 				return k;
 			});
 
-			for (let i = 0; i < this.renderStats.length; ++i) {
-				const stat = this.stats[this.renderStats[i]];
+			for (let index = 0; index < this.renderStats.length; index++) {
+				const currentStat = this.stats[this.renderStats[index]];
+				const renderingStats: RenderingStatElement[] = [];
+				const currentStatValue =
+					currentStat.values.length === 0 ? 0 : currentStat.values[0];
 
-				// We outline at full opacity and fill with 40% opacity
-				const color = {
-					red: stat.cairo_color.red,
-					green: stat.cairo_color.green,
-					blue: stat.cairo_color.blue,
-					alpha: stat.cairo_color.alpha * 0.8,
-				};
+				if (typeof currentStatValue === 'number') {
+					const cairo_color = this.lookupColor(
+						currentStat.color,
+						currentStat.cairo_color
+					);
 
-				// Render the bar graph's fill
-				this.plotDataSet(cr, height, i, stat.values, false);
+					renderingStats.push({
+						value: currentStatValue as number,
+						cairo_color: cairo_color,
+						color: {
+							red: cairo_color.red,
+							green: cairo_color.green,
+							blue: cairo_color.blue,
+							alpha: cairo_color.alpha * 0.8,
+						},
+					});
+				} else {
+					const combined: IndicatorStatValues = currentStatValue as IndicatorStatValues;
 
-				cr.lineTo((i + 1) * (this.barWidth + this.barPadding), height);
-				cr.lineTo(i * (this.barWidth + this.barPadding) + this.barPadding, height);
-				cr.closePath();
+					for (const value of combined.values) {
+						if (value.visible) {
+							const cairo_color = this.lookupColor(value.color, value.cairo_color);
 
-				cr.setSourceRGBA(color.red, color.green, color.blue, color.alpha);
-				cr.fill();
+							renderingStats.push({
+								value: value.value,
+								cairo_color: cairo_color,
+								color: {
+									red: cairo_color.red,
+									green: cairo_color.green,
+									blue: cairo_color.blue,
+									alpha: cairo_color.alpha * 0.8,
+								},
+							});
+						}
+					}
+				}
 
-				// Render the bar graph's height line
-				this.plotDataSet(cr, height, i, stat.values, false, 0.5);
+				for (const renderedStat of renderingStats) {
+					// We outline at full opacity and fill with 40% opacity
+					const color = renderedStat.color;
+					const barHeight = height * renderedStat.value;
+					const offsetX = index * (this.barWidth + this.barPadding);
+					const offsetY = height - barHeight;
 
-				cr.setSourceRGBA(
-					stat.cairo_color.red,
-					stat.cairo_color.green,
-					stat.cairo_color.blue,
-					stat.cairo_color.alpha
-				);
-				cr.setLineWidth(1.0);
-				cr.setDash([], 0);
-				cr.stroke();
+					// Render the bar graph's fill
+					cr.setAntialias(Cairo.Antialias.NONE);
+					cr.setSourceRGBA(color.red, color.green, color.blue, color.alpha);
+					cr.rectangle(offsetX, offsetY, this.barWidth, barHeight);
+					cr.fill();
+					cr.stroke();
+				}
 			}
 		}
 
-		private plotDataSet(
-			cr: Cairo.Context,
-			height: number,
-			position: number,
-			values: number[],
-			_reverse: boolean,
-			nudge = 0
-		) {
-			const barOuterWidth = this.barWidth + this.barPadding;
-			const barHeight = 1 - (values[0] || 0);
+		protected currentLabels: Dictionary<St.Label> = {};
+		protected currentValues: Dictionary<St.Label> = {};
+		protected currentColors: Dictionary<St.Bin> = {};
+		protected datasetNames: PopupDataset[] = [];
 
-			cr.moveTo(position * barOuterWidth + this.barPadding, barHeight * height + nudge);
-			cr.lineTo((position + 1) * barOuterWidth, barHeight * height + nudge);
+		protected buildPopup(
+			datasetNames: PopupDataset[],
+			graph: InstanceType<typeof HorizontalGraph>,
+			prefix: string
+		) {
+			let offsetY = 0;
+
+			this.dropdownLayout.attach(graph, 0, offsetY, 3, 1);
+
+			for (const dataset of datasetNames) {
+				if (dataset.header) {
+					const label = new St.Label({ style_class: 'title_label' });
+
+					label.set_text(dataset.label);
+
+					offsetY++;
+					this.dropdownLayout.attach(label, 0, offsetY, 3, 1);
+				} else {
+					const keyName = `${prefix}-${dataset.name}-used`;
+					const colorName = `${prefix}-${dataset.name}-color`;
+
+					if (dataset.vue_meter) {
+						this.addDataSet(keyName, colorName);
+					}
+
+					graph.addDataSet(keyName, colorName);
+
+					const label = new St.Label({
+						style_class: 'description_label',
+					});
+
+					const value = new St.Label({
+						style_class: 'value_label',
+					});
+
+					const box = new St.Bin({
+						style_class: `color_label bg-${prefix}-${dataset.name}-color`,
+						xExpand: false,
+						yExpand: false,
+						reactive: false,
+						xAlign: Clutter.ActorAlign.CENTER,
+						yAlign: Clutter.ActorAlign.CENTER,
+					});
+
+					this.currentColors[dataset.name] = box;
+					this.currentLabels[dataset.name] = label;
+					this.currentValues[dataset.name] = value;
+
+					label.set_text(dataset.label);
+
+					offsetY++;
+					this.dropdownLayout.attach(box, 0, offsetY, 1, 1);
+					this.dropdownLayout.attach(label, 1, offsetY, 1, 1);
+					this.dropdownLayout.attach(value, 2, offsetY, 1, 1);
+				}
+			}
 		}
 	}
 );

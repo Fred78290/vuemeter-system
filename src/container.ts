@@ -68,19 +68,21 @@ export default GObject.registerClass(
 				if (!this.showPopupTimeoutId) {
 					const timeout = this.popupShowing ? 0 : Constantes.ITEM_HOVER_TIMEOUT;
 
-					this.showPopupTimeoutId = GLib.timeout_add(
-						GLib.PRIORITY_DEFAULT,
-						timeout,
-						() => {
-							this.popupShowing = true;
-							item.showPopup();
-							this.showPopupTimeoutId = 0;
+					if (this.showPopupTimeoutId === 0) {
+						this.showPopupTimeoutId = GLib.timeout_add(
+							GLib.PRIORITY_DEFAULT,
+							timeout,
+							() => {
+								this.popupShowing = true;
+								item.showPopup();
+								this.showPopupTimeoutId = 0;
 
-							return false;
-						}
-					);
+								return false;
+							}
+						);
+					}
 
-					if (this.resetHoverTimeoutId !== 0) {
+					if (this.resetHoverTimeoutId) {
 						GLib.source_remove(this.resetHoverTimeoutId);
 						this.resetHoverTimeoutId = 0;
 					}
@@ -93,7 +95,7 @@ export default GObject.registerClass(
 
 				item.hidePopup();
 
-				if (this.popupShowing) {
+				if (this.popupShowing && this.resetHoverTimeoutId === 0) {
 					this.resetHoverTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 0, () => {
 						this.popupShowing = false;
 						this.resetHoverTimeoutId = 0;
