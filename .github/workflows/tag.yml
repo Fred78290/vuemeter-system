@@ -10,6 +10,7 @@ on:
 env:
   GNOME_ORG_USERNAME: ${{ secrets.GNOME_ORG_USERNAME }}
   GNOME_ORG_PASSWORD: ${{ secrets.GNOME_ORG_PASSWORD }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   build:
     name: Build
