@@ -84,9 +84,9 @@ msgstr "Utilisatation du swap"
 
 #: src/indicators/swap.js:45
 msgid "Pagein swap usage"
-msgstr "Nombres de pages en entrée"
+msgstr "Nombre de pages en entrée"
 
 #: src/indicators/swap.js:58
 msgid "Pageout swap usage"
-msgstr "Nombres de pages en sortie"
+msgstr "Nombre de pages en sortie"
 
