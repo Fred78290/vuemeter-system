@@ -17,6 +17,7 @@ EXTENSION_DIR=${PWD}
 popd>/dev/null
 
 DIST_DIR="${EXTENSION_DIR}/dist"
+BUILD_DIR="${EXTENSION_DIR}/build"
 EXTENSION_NAME="gnome-stats-pro2@aldunelabs.com"
 
 # Read VERSION from metadata.json
@@ -44,7 +45,7 @@ fi
 rm -rf "gnome-stats-pro2@aldunelabs.com.shell-extension.zip"
 
 # Clean up build directory
-rm -rf "build"
+rm -rf "${BUILD_DIR}"
 
 # Check if tsc is installed
 command -v tsc >/dev/null 2>&1 || { log_message "Error: tsc is required but it's not installed. Aborting."; exit 1; }
@@ -80,10 +81,11 @@ else
 fi
 
 # Create dist directory
-mkdir -p "$DIST_DIR"
+rm -rf "${DIST_DIR}"
+mkdir -p "${DIST_DIR}"
 
 # Copy build directory content to dist directory
-cp -r "${EXTENSION_DIR}/build/"* "${DIST_DIR}/"
+cp -r "${BUILD_DIR}/"* "${DIST_DIR}/"
 
 # Files and directories to include
 INCLUDE_FILES="metadata.json stylesheet.css README.md LICENSE schemas icons po"
@@ -94,36 +96,49 @@ for file in $INCLUDE_FILES; do
         cp -r "${EXTENSION_DIR}/${file}" "${DIST_DIR}/"
     else
         log_message "File or directory ${file} not found. Aborting."
-        rm -rf "$DIST_DIR"
+        rm -rf "${DIST_DIR}"
         exit 1
     fi
 done
 
 # enter dist directory
-cd "$DIST_DIR"
+pushd "${DIST_DIR}"
+
+IFS=. read GNOME_VERSION_MAJOR GNOME_VERSION_MINOR <<< "$(gnome-extensions version)"
 
 # Pack the extension
-gnome-extensions pack --force \
-    --podir=./po \
-    --schema=./schemas/gschemas.compiled \
-    --extra-source=./src \
-    --extra-source=./schemas \
-    --extra-source=./icons \
-    --extra-source=./LICENSE.md \
-    --extra-source=./README.md \
-    .
+if [ ${GNOME_VERSION_MAJOR} -ge 46 ]; then
+    gnome-extensions pack --force \
+        --podir=./po \
+        --schema=./schemas/gschemas.compiled \
+        --extra-source=./src \
+        --extra-source=./icons \
+        --extra-source=./LICENSE.md \
+        --extra-source=./README.md \
+        .
+else
+    gnome-extensions pack --force \
+        --podir=./po \
+        --extra-source=./src \
+        --extra-source=./schemas \
+        --extra-source=./icons \
+        --extra-source=./LICENSE.md \
+        --extra-source=./README.md \
+        .
+fi
+
+popd
 
 # Check for errors
 if [ $? -ne 0 ]; then
     log_message "Failed to pack the extension"
     
-    cd "${EXTENSION_DIR}"
-    rm -rf "${DIST_DIR}"
+#   rm -rf "${DIST_DIR}"
     exit 1
 fi
 
 # Copy the packed extension to the main directory
-mv "$EXTENSION_NAME.shell-extension.zip" "../$EXTENSION_NAME.shell-extension.zip"
+mv "${DIST_DIR}/$EXTENSION_NAME.shell-extension.zip" "$EXTENSION_NAME.shell-extension.zip"
 
 # Return to the main directory
 cd ..
