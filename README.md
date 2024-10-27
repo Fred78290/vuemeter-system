@@ -67,7 +67,7 @@ environment.systemPackages = with pkgs; [
 
 ## How to Download
 
--   [Gnome-Stats-Pro2](https://extensions.gnome.org/extension/1043/gnomestatspro2/) is available on GNOME's Extension Repository.
+-   [Gnome-Stats-Pro2](https://extensions.gnome.org/extension/7457/gnomestatspro2/) is available on GNOME's Extension Repository.
 -   [Gnome-Stats-Pro2](https://github.com/Fred78290/gnome-stats-pro2) is available on GitHub.
 
 ## Support
