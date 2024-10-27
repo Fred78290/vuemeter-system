@@ -38,7 +38,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo apt update
-        sudo apt install gnome-shell-extensions gettext -y
+        sudo apt install gnome-shell-extensions gettext libglib2.0-bin -y
 
     - run: npm install
     - run: npm ci

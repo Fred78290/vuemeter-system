@@ -1,5 +1,6 @@
 #!/bin/bash
 # pack.sh - Script to package GNOME extension into a zip file for distribution
+set -e
 
 # Check for necessary tools
 command -v bash >/dev/null 2>&1 || { echo >&2 "Bash is required but it's not installed. Aborting."; exit 1; }
@@ -106,6 +107,7 @@ gnome-extensions pack --force \
     --podir=./po \
     --schema=./schemas/gschemas.compiled \
     --extra-source=./src \
+    --extra-source=./schemas \
     --extra-source=./icons \
     --extra-source=./LICENSE.md \
     --extra-source=./README.md \

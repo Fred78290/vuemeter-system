@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Set the path to the directory containing the gschema XML files
 pushd $(dirname "$0")/.. >/dev/null
