@@ -176,7 +176,9 @@ export default GObject.registerClass(
 
 		private updateMaxLabel() {
 			if (this.options.showMax) {
-				this.graphoverlay.label.set_text(this.max.formatMetricPretty(this.options.units));
+				this.graphoverlay.label.set_text(
+					Utils.formatMetricPretty(this.max, this.options.units)
+				);
 			}
 		}
 

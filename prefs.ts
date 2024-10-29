@@ -31,9 +31,11 @@ const GeneralPrefsPage = GObject.registerClass(
 
 export default class VueMeterMonitorPreferences extends ExtensionPreferences {
     async fillPreferencesWindow(window: Adw.PreferencesWindow) {
-        this.initTranslations(this.metadata['gettext-domain'] ?? 'vuemeter-system@aldunelabs.com');
-
         Utils.init('prefs', this, this.metadata, this.getSettings());
         window.add(new GeneralPrefsPage(this.getSettings()));
+
+        window.connect('close-request', () => {
+            Utils.release();
+        });
     }
 }

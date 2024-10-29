@@ -219,7 +219,7 @@ export default GObject.registerClass(
 								this.graph?.addDataPoint(keyName, value);
 							}
 
-							const strValue = '%sb/s'.format(value.formatMetricPretty());
+							const strValue = '%sb/s'.format(Utils.formatMetricPretty(value));
 
 							this.currentValues[dataset.name].set_text(strValue);
 						}

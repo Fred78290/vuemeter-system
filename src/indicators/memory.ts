@@ -188,7 +188,7 @@ export default GObject.registerClass(
 						this.graph?.addDataPoint(keyName, value);
 					}
 
-					const mem_ttl_text = '%s'.format(value.formatMetricPretty('B'));
+					const mem_ttl_text = '%s'.format(Utils.formatMetricPretty(value, 'B'));
 					this.currentValues[dataset.name].set_text(mem_ttl_text);
 				}
 			}

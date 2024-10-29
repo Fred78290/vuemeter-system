@@ -67,7 +67,7 @@ environment.systemPackages = with pkgs; [
 
 ## How to Download
 
--   [vuemeter-system](https://extensions.gnome.org/extension/7457/vuemeter-system/) is available on GNOME's Extension Repository.
+-   [vuemeter-system](https://extensions.gnome.org/extension/59801/vuemeter-system/) is available on GNOME's Extension Repository.
 -   [vuemeter-system](https://github.com/Fred78290/vuemeter-system) is available on GitHub.
 
 ## Support

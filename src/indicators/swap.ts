@@ -116,7 +116,7 @@ export default GObject.registerClass(
 
 						this.addDataPointWithColor(keyName, delta, color);
 
-						const swap_ttl_text = '%s'.format(value.formatMetricPretty('B'));
+						const swap_ttl_text = '%s'.format(Utils.formatMetricPretty(value, 'B'));
 
 						this.currentValues[dataset.name].set_text(swap_ttl_text);
 					} else {

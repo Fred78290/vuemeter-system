@@ -15,7 +15,7 @@ import SwapIndicator from './indicators/swap.js';
 const INDICATORS = [CpuIndicator, MemoryIndicator, SwapIndicator, NetworkIndicator];
 
 export default GObject.registerClass(
-	class GnomeStatsProContainer extends PanelMenu.Button {
+	class VueMeterSystemContainer extends PanelMenu.Button {
 		private resetHoverTimeoutId = 0;
 		private showPopupTimeoutId = 0;
 		private popupShowing: boolean = false;
@@ -59,6 +59,16 @@ export default GObject.registerClass(
 			if (this.box) this.remove_child(this.box);
 
 			this.box?.destroy();
+
+			if (this.showPopupTimeoutId) {
+				GLib.source_remove(this.showPopupTimeoutId);
+				this.showPopupTimeoutId = 0;
+			}
+
+			if (this.resetHoverTimeoutId) {
+				GLib.source_remove(this.resetHoverTimeoutId);
+				this.resetHoverTimeoutId = 0;
+			}
 
 			super.destroy();
 		}

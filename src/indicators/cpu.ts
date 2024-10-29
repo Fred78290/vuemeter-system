@@ -210,7 +210,7 @@ export default GObject.registerClass(
 					const registre = dataset.registre;
 					const keyName = `cpu-${dataset.name}-used`;
 					const value = (cpu_ttl_usage[registre] * 100) / this.ncpu;
-					const cpu_ttl_text = '%s%%'.format(value.formatMetricPretty(''));
+					const cpu_ttl_text = '%s%%'.format(Utils.formatMetricPretty(value));
 
 					cpu_ttl_usage[registre] = value;
 

@@ -12,10 +12,18 @@ export default class Utils {
 	static HEADER = 'vuemeter-system';
 
 	static debugMode = false;
-	static extension: Extension | ExtensionPreferences;
-	static metadata: ExtensionMetadata;
-	static settings: Gio.Settings;
-	private static cachedColor: Dictionary<CachedColor> = {};
+	static extension: Extension | ExtensionPreferences | null;
+	static metadata: ExtensionMetadata | null;
+	static settings: Gio.Settings | null;
+	private static cachedColor?: Dictionary<CachedColor> = {};
+
+	static release() {
+		Utils.extension = null;
+		Utils.metadata = null;
+		Utils.settings = null;
+		Utils.cachedColor = undefined;
+		Config.settings = undefined;
+	}
 
 	static init(
 		service: string,
@@ -57,7 +65,6 @@ export default class Utils {
 			console.error(e);
 		}
 	}
-
 
 	private static clean_logFile() {
 		try {
@@ -167,6 +174,10 @@ export default class Utils {
 
 	static lookupColor(widget: St.Widget, name: string, defaultColor: Color): Color {
 		if (widget.get_stage()) {
+			if (this.cachedColor === undefined) {
+				this.cachedColor = {};
+			}
+
 			let cachedColorPerWidget = this.cachedColor[widget.name];
 
 			if (cachedColorPerWidget === undefined) {
@@ -202,5 +213,19 @@ export default class Utils {
 		}
 
 		return defaultColor;
+	}
+
+	static formatMetricPretty(value: number, units?: string) {
+		let metricPrefix = '';
+
+		if (value > 1024 * 1024) {
+			value /= 1024 * 1024;
+			metricPrefix = 'Mi';
+		} else if (value > 1024) {
+			value /= 1024;
+			metricPrefix = 'Ki';
+		}
+
+		return '%0.2f %s%s'.format(value, metricPrefix, units || '');
 	}
 }

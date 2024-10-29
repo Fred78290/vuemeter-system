@@ -9,27 +9,6 @@ export interface Dictionary<T> {
 	[key: string]: T;
 }
 
-declare global {
-	interface Number {
-		formatMetricPretty: (units?: string) => string;
-	}
-}
-
-Number.prototype.formatMetricPretty = function (units?: string) {
-	let value = this.valueOf();
-	let metricPrefix = '';
-
-	if (value > 1024 * 1024) {
-		value /= 1024 * 1024;
-		metricPrefix = 'Mi';
-	} else if (value > 1024) {
-		value /= 1024;
-		metricPrefix = 'Ki';
-	}
-
-	return '%0.2f %s%s'.format(value, metricPrefix, units || '');
-};
-
 export class Constantes {
 	static readonly RED = { red: 1, green: 0, blue: 0, alpha: 1 };
 	static readonly GREEN = { red: 0, green: 1, blue: 0, alpha: 1 };

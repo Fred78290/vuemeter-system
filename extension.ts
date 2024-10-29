@@ -6,22 +6,20 @@ import GLib from 'gi://GLib';
 import { Extension, ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js';
 import Utils from './src/utils.js';
 
-import GnomeStatsProContainer from './src/container.js';
+import VueMeterSystemContainer from './src/container.js';
 
-export default class GnomeStatsProExtension extends Extension {
+export default class VueMeterSystemExtension extends Extension {
     private timeout: number = 0;
-    private container?: InstanceType<typeof GnomeStatsProContainer>;
+    private container?: InstanceType<typeof VueMeterSystemContainer>;
 
     constructor(metadatas: ExtensionMetadata) {
         super(metadatas);
-
-        this.initTranslations(metadatas['gettext-domain'] ?? 'vuemeter-system@aldunelabs.com');
-
-        Utils.init('extension', this, metadatas, this.getSettings());
     }
 
     public enable(): void {
-        this.container = new GnomeStatsProContainer();
+        Utils.init('extension', this, this.metadata, this.getSettings());
+
+        this.container = new VueMeterSystemContainer();
 
         // Startup delay to allow the initialization of the monitors
         // avoiding graphical glitches / empty widgets
@@ -51,5 +49,7 @@ export default class GnomeStatsProExtension extends Extension {
         }
 
         this.container = undefined;
+
+        Utils.release();
     }
 }
