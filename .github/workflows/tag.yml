@@ -73,5 +73,5 @@ jobs:
     - name: Publish
       shell: bash
       run: |
-        gep publish --file vuemeter-system@aldunelabs.com.shell-extension.zip --username $GNOME_ORG_USERNAME --password $GNOME_ORG_PASSWORD
+        gep publisharchive --file vuemeter-system@aldunelabs.com.shell-extension.zip --username $GNOME_ORG_USERNAME --password $GNOME_ORG_PASSWORD
     
