@@ -10,8 +10,6 @@ log_message() {
     echo "[`date +"%Y-%m-%d %H:%M:%S"`] $1"
 }
 
-EXTENSION_NAME="monitor@astraext.github.io"
-
 EXTENSION_DIR=$(dirname "$0") # Assumes pack.sh is in the main directory
 DIST_DIR="${EXTENSION_DIR}/dist"
 

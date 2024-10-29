@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2024 Fred78290
-# This file is distributed under the same license as the GnomeStatsPro2 package.
+# This file is distributed under the same license as the vuemeter-system package.
 # FIRST AUTHOR <frederic.boltz@gmail.com>, 2024.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeStatsPro2 1\n"
+"Project-Id-Version: vuemeter-system 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-26 12:20+0000\n"
+"POT-Creation-Date: 2024-10-29 11:13+0000\n"
 "PO-Revision-Date: 2024-10-21 12:23+0200\n"
 "Last-Translator: Fred78290 <frederic.boltz@gmail.com>\n"
 "Language-Team: Fred78290 <frederic.boltz@gmail.com>\n"
@@ -90,3 +90,21 @@ msgstr "Nombre de pages en entrée"
 msgid "Pageout swap usage"
 msgstr "Nombre de pages en sortie"
 
+#: prefs.js:8
+msgid "General preferences"
+msgstr "Préférences générales"
+
+#: prefs.js:10
+msgid "General"
+msgstr "Général"
+
+#: prefs.js:13
+msgid "Configure the debug mode of the extension"
+msgstr "Configure le mode debug pour l'extension"
+
+#, fuzzy
+#~ msgid "Debug"
+#~ msgstr "Debug"
+
+#~ msgid "Debug Mode"
+#~ msgstr "Debug Mode"

@@ -24,7 +24,7 @@ export default GObject.registerClass(
 		public uuid = '';
 
 		constructor() {
-			super(0, 'GnomeStatsPro2.Container');
+			super(0, 'VueMeterMonitor.Container');
 
 			this.box = new St.BoxLayout({
 				style_class: 'gsp-container',

@@ -15,9 +15,9 @@ export default class GnomeStatsProExtension extends Extension {
     constructor(metadatas: ExtensionMetadata) {
         super(metadatas);
 
-        this.initTranslations(metadatas['gettext-domain'] ?? 'gnome-stats-pro2@aldunelabs.com');
+        this.initTranslations(metadatas['gettext-domain'] ?? 'vuemeter-system@aldunelabs.com');
 
-        Utils.init(this, metadatas, this.getSettings());
+        Utils.init('extension', this, metadatas, this.getSettings());
     }
 
     public enable(): void {

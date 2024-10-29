@@ -1,5 +1,5 @@
 #!/bin/bash
-NAME=gnome-stats-pro2
+NAME=vuemeter-system
 DOMAIN=aldunelabs.com
 SSH_OPTIONS="-o BatchMode=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 SSH_TARGET="ubuntu@10.129.134.168"

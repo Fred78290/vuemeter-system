@@ -1,4 +1,4 @@
-name: build-gnome-stats-pro2
+name: build-vuemeter-system
 on:
   push:
     paths:

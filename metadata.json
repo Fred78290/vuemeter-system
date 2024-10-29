@@ -1,13 +1,13 @@
 {
     "shell-version": ["46", "47"],
-    "uuid": "gnome-stats-pro2@aldunelabs.com",
-    "extension-id": "gnome-stats-pro2",
-    "settings-schema": "org.gnome.shell.extensions.gnome-stats-pro2",
-    "gettext-domain": "gnome-stats-pro2@aldunelabs.com",
+    "uuid": "vuemeter-system@aldunelabs.com",
+    "extension-id": "vuemeter-system",
+    "settings-schema": "org.gnome.shell.extensions.vuemeter-system",
+    "gettext-domain": "vuemeter-system@aldunelabs.com",
     "original-author": "frederic.boltz@gmail.com",
-    "name": "GnomeStatsPro2",
+    "name": "VueMeter System",
     "description": "System monitor showing CPU and memory usage.",
-    "url": "https://github.com/Fred78290/gnome-stats-pro2",
+    "url": "https://github.com/Fred78290/vuemeter-system",
     "version": 1,
     "version-name": "1.0.0"
 }

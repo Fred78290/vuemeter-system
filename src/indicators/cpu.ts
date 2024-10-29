@@ -16,7 +16,7 @@ export default GObject.registerClass(
 		percentUseCpu: CpuUsage[] = [];
 
 		constructor() {
-			super('GnomeStatsPro2.CpuIndicator');
+			super('VueMeterMonitor.CpuIndicator');
 
 			this.datasetNames = [
 				{

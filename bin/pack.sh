@@ -18,7 +18,7 @@ popd>/dev/null
 
 DIST_DIR="${EXTENSION_DIR}/dist"
 BUILD_DIR="${EXTENSION_DIR}/build"
-EXTENSION_NAME="gnome-stats-pro2@aldunelabs.com"
+EXTENSION_NAME="vuemeter-system@aldunelabs.com"
 
 # Read VERSION from metadata.json
 if [ -f "${EXTENSION_DIR}/metadata.json" ]; then
@@ -42,7 +42,7 @@ else
 fi
 
 # Remove the previous build if any
-rm -rf "gnome-stats-pro2@aldunelabs.com.shell-extension.zip"
+rm -rf "vuemeter-system@aldunelabs.com.shell-extension.zip"
 
 # Clean up build directory
 rm -rf "${BUILD_DIR}"

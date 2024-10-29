@@ -43,7 +43,7 @@ export default GObject.registerClass(
 		private _last_time = 0;
 
 		constructor() {
-			super('GnomeStatsPro2.NetworkIndicator');
+			super('VueMeterMonitor.NetworkIndicator');
 
 			this.datasetNames = [
 				{

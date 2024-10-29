@@ -1,6 +1,6 @@
-# Gnome-Stats-Pro2
+# vuemeter-system
 
-Gnome-Stats-Pro2 is a full rewrite and port to Gnome version 46 and 47 of the [unmaintened gnome-stats-pro extension](https://github.com/tpenguin/gnome-stats-pro) from Thralling Penguin .
+vuemeter-system is a full rewrite and port to Gnome version 46 and 47 of the [unmaintened gnome-stats-pro extension](https://github.com/tpenguin/gnome-stats-pro) from Thralling Penguin .
 
 ## As the original
 
@@ -24,7 +24,7 @@ display of historical utilizations.
 
 ## Requirements
 
-gnome-stats-pro2 use gtop and you need to install the `libgtop` package.
+vuemeter-system use gtop and you need to install the `libgtop` package.
 
 Here is a non-exhaustive list of how to install `libgtop` on some popular Linux distributions:
 
@@ -67,12 +67,12 @@ environment.systemPackages = with pkgs; [
 
 ## How to Download
 
--   [Gnome-Stats-Pro2](https://extensions.gnome.org/extension/7457/gnomestatspro2/) is available on GNOME's Extension Repository.
--   [Gnome-Stats-Pro2](https://github.com/Fred78290/gnome-stats-pro2) is available on GitHub.
+-   [vuemeter-system](https://extensions.gnome.org/extension/7457/vuemeter-system/) is available on GNOME's Extension Repository.
+-   [vuemeter-system](https://github.com/Fred78290/vuemeter-system) is available on GitHub.
 
 ## Support
 
-Support is available through the GitHub project page [here](https://github.com/Fred78290/gnome-stats-pro2/issues).
+Support is available through the GitHub project page [here](https://github.com/Fred78290/vuemeter-system/issues).
 
 Please note this is a open-source, community project, and thus
 no guarantees on response time is implied.

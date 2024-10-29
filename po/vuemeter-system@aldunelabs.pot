@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Fred78290
-# This file is distributed under the same license as the GnomeStatsPro2 package.
+# This file is distributed under the same license as the vuemeter-system package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeStatsPro2 1\n"
+"Project-Id-Version: vuemeter-system 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-27 12:46+0000\n"
+"POT-Creation-Date: 2024-10-29 11:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,4 +88,16 @@ msgstr ""
 
 #: src/indicators/swap.js:58
 msgid "Pageout swap usage"
+msgstr ""
+
+#: prefs.js:8
+msgid "General preferences"
+msgstr ""
+
+#: prefs.js:10
+msgid "General"
+msgstr ""
+
+#: prefs.js:13
+msgid "Configure the debug mode of the extension"
 msgstr ""

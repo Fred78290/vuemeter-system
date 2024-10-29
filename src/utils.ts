@@ -2,27 +2,73 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import St from 'gi://St';
 import { Extension, ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 import Config from './config.js';
 import { Color, Dictionary } from './types.js';
 
 type CachedColor = Dictionary<Color>;
 
 export default class Utils {
-	static HEADER = 'gnome-stats-pro2';
+	static HEADER = 'vuemeter-system';
 
 	static debugMode = false;
-	static extension: Extension;
+	static extension: Extension | ExtensionPreferences;
 	static metadata: ExtensionMetadata;
 	static settings: Gio.Settings;
 	private static cachedColor: Dictionary<CachedColor> = {};
 
-	static init(extension: Extension, metadata: ExtensionMetadata, settings: Gio.Settings) {
+	static init(
+		service: string,
+		extension: Extension | ExtensionPreferences,
+		metadata: ExtensionMetadata,
+		settings: Gio.Settings
+	) {
 		Utils.extension = extension;
 		Utils.metadata = metadata;
 		Utils.settings = settings;
 		Config.settings = settings;
 
 		Utils.debugMode = Config.get_boolean('debug-mode');
+
+		if (service === 'extension') {
+			Utils.settings.connect('changed::debug-mode', (sender: Gio.Settings, key: string) => {
+				this.debugMode = sender.get_boolean(key);
+
+				if (this.debugMode) {
+					this.clean_logFile();
+				} else {
+					this.delete_logFile();
+				}
+			});
+
+			if (this.debugMode) {
+				this.clean_logFile();
+			}
+		}
+	}
+
+	private static delete_logFile() {
+		try {
+			const log = Utils.getLogFile();
+			if (log) {
+				if (log.query_exists(null)) log.delete(null);
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+
+	private static clean_logFile() {
+		try {
+			const log = Utils.getLogFile();
+			if (log) {
+				if (log.query_exists(null)) log.delete(null);
+				log.create_readwrite(Gio.FileCreateFlags.REPLACE_DESTINATION, null);
+			}
+		} catch (e) {
+			console.error(e);
+		}
 	}
 
 	static fromStyles(color: Color): Color {
@@ -37,7 +83,7 @@ export default class Utils {
 	static getLogFile(): Gio.File | null {
 		try {
 			const dataDir = GLib.get_user_cache_dir();
-			const destination = GLib.build_filenamev([dataDir, 'gnome-stats-pro2', 'debug.log']);
+			const destination = GLib.build_filenamev([dataDir, 'vuemeter-system', 'debug.log']);
 			const destinationFile = Gio.File.new_for_path(destination);
 
 			if (

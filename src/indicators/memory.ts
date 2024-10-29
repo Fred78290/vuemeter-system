@@ -11,7 +11,7 @@ export default GObject.registerClass(
 		constructor() {
 			const memoryInfos = new GTop.glibtop_mem();
 
-			super('GnomeStatsPro2.MemoryIndicator', {
+			super('VueMeterMonitor.MemoryIndicator', {
 				updateInterval: 1000,
 			});
 

@@ -22,8 +22,8 @@ if [ ! -f metadata.json ]; then
     exit 1
 fi
 
-PACKAGE_VERSION=$(jq -r '.version' metadata.json)
-PACKAGE_NAME=$(jq -r '.name' metadata.json)
+PACKAGE_VERSION=$(jq -r '."version-name"' metadata.json)
+PACKAGE_NAME=$(jq -r '."extension-id"' metadata.json)
 
 if [ -z "$PACKAGE_VERSION" ]; then
     log_message "Error: Unable to extract package version from metadata.json"
@@ -58,7 +58,7 @@ cd build || { log_message "Error: Failed to change directory to build"; exit 1; 
 # Generate pot file from .js files, excluding node_modules directory
 log_message "Generating POT file..."
 JS_FILES=$(find . -name '*.js' -type f)
-xgettext --language=JavaScript --from-code=UTF-8 --package-name="$PACKAGE_NAME" --package-version="$PACKAGE_VERSION" --copyright-holder="Fred78290" --output=../po/gnome-stats-pro2@aldunelabs.pot $JS_FILES
+xgettext --language=JavaScript --from-code=UTF-8 --package-name="$PACKAGE_NAME" --package-version="$PACKAGE_VERSION" --copyright-holder="Fred78290" --output=../po/vuemeter-system@aldunelabs.pot $JS_FILES
 if [ $? -ne 0 ]; then
     log_message "Error: Failed to generate POT file"
     exit 1
@@ -68,13 +68,13 @@ log_message "POT file generated successfully"
 cd - || { log_message "Error: Failed to change directory to $EXTENSION_DIR"; exit 1; }
 
 # Remove duplicate entries from the pot file
-msguniq po/gnome-stats-pro2@aldunelabs.pot -o po/gnome-stats-pro2@aldunelabs.pot
+msguniq po/vuemeter-system@aldunelabs.pot -o po/vuemeter-system@aldunelabs.pot
 
 # Update all .po files with the new .pot file
 log_message "Updating PO files..."
 for po_file in po/*.po; do
     if [ -f "$po_file" ]; then
-        msgmerge -U "$po_file" po/gnome-stats-pro2@aldunelabs.pot
+        msgmerge -U "$po_file" po/vuemeter-system@aldunelabs.pot
 
         if [ $? -eq 0 ]; then
             log_message "Updated $po_file"
@@ -88,5 +88,7 @@ done
 log_message "PO file updates completed"
 
 log_message "Script completed"
+
+rm -rf po/*.po~
 
 exit 0

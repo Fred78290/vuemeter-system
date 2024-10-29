@@ -18,5 +18,5 @@
         "noUnusedParameters": true
     },
     "include": ["types/ambient.d.ts"],
-    "files": ["extension.ts"]
+    "files": ["extension.ts", "prefs.ts"]
 }

@@ -19,7 +19,7 @@ export default GObject.registerClass(
 		};
 
 		constructor() {
-			super('GnomeStatsPro2.SwapIndicator', {
+			super('VueMeterMonitor.SwapIndicator', {
 				updateInterval: 2000,
 			});
 

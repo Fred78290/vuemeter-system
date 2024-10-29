@@ -1,25 +1,26 @@
 {
-    "name": "gnome-stats-pro2",
+    "name": "vuemeter-system",
     "version": "0.0.0",
     "description": "System monitor showing CPU and memory usage.",
     "type": "module",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Fred78290/gnome-stats-pro.git"
+        "url": "git+https://github.com/Fred78290/vuemeter-system.git"
     },
     "author": "Fred78290 <frederic.boltz@gmail.com>",
     "license": "LGPL-3.0-or-later",
     "bugs": {
-        "url": "https://github.com/Fred78290/gnome-stats-pro/issues"
+        "url": "https://github.com/Fred78290/vuemeter-system/issues"
     },
-    "homepage": "https://github.com/Fred78290/gnome-stats-pro",
+    "homepage": "https://github.com/Fred78290/vuemeter-system",
     "keywords": [
         "gnome",
         "cpu",
         "monitor",
         "javascript",
         "gnome-shell",
-        "sensor"
+        "sensor",
+        "vuemeter"
     ],
     "scripts": {
         "format": "prettier --write --cache . && eslint --fix .",
