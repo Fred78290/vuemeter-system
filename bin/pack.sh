@@ -113,12 +113,14 @@ IFS=. read GNOME_VERSION_MAJOR GNOME_VERSION_MINOR <<< "$(gnome-extensions versi
 if [ ${GNOME_VERSION_MAJOR} -ge 46 ]; then
     gnome-extensions pack --force \
         --podir=./po \
-        --schema=./schemas/gschemas.compiled \
+        --schema=./schemas/org.gnome.shell.extensions.vuemeter-system.gschema.xml \
         --extra-source=./src \
         --extra-source=./icons \
         --extra-source=./LICENSE.md \
         --extra-source=./README.md \
         .
+    # Add all schemas files    
+    zip -ur vuemeter-system@aldunelabs.com.shell-extension.zip schemas
 else
     gnome-extensions pack --force \
         --podir=./po \
