@@ -6,11 +6,11 @@ import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import HorizontalGraph from './horizontalgraph.js';
 import { Color, Constantes, Dictionary } from './types.js';
 import Utils from './utils.js';
-import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 export type IndicatorOptions = {
 	updateInterval: number;
@@ -274,8 +274,10 @@ export default GObject.registerClass(
 
 		private showSystemMonitorOrPrefs(_actor: Clutter.Actor, event: Clutter.Event): boolean {
 			if (event.get_button() !== 1) {
-				const extension = Extension.lookupByURL(import.meta.url);
-				if (extension) extension.openPreferences();
+				const extension: Extension = Utils.extension as Extension;
+
+				extension.openPreferences();
+
 				return Clutter.EVENT_PROPAGATE;
 			}
 
