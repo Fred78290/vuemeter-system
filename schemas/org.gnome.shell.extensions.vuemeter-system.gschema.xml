@@ -6,5 +6,20 @@
 			<summary>Debug</summary>
 			<description>Enable debug mode</description>
 		</key>
+		<key name="show-max-lines" type="b">
+			<default>false</default>
+			<summary>Show maximum lines</summary>
+			<description>Show maximum lines in network graphic</description>
+		</key>
+		<key name="mem-stack" type="b">
+			<default>false</default>
+			<summary>Stack format for memory graphic</summary>
+			<description>Show memory graphic in stack format</description>
+		</key>
+		<key name="bits-per-second" type="b">
+			<default>false</default>
+			<summary>Stack format for memory graphic</summary>
+			<description>Show memory graphic in stack format</description>
+		</key>
 	</schema>
 </schemalist>

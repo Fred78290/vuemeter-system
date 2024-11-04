@@ -75,6 +75,8 @@ export default GObject.registerClass(
 			xAlign: Clutter.ActorAlign.FILL,
 			yAlign: Clutter.ActorAlign.FILL,
 		});
+		private stack: number[] = [];
+		private last_stack: number[] = [];
 
 		constructor(name: string, options?: HorizontalGraphOptions | any) {
 			super({
@@ -154,7 +156,10 @@ export default GObject.registerClass(
 				return Math.max(prev, cur);
 			}, 0);
 
-			if (this.max < this.stats[name].max) {
+			if (
+				this.max < this.stats[name].max &&
+				(Utils.showMaxLines || !name.startsWith('network-max-'))
+			) {
 				this.max = this.stats[name].max;
 				this.updateMaxLabel();
 			}
@@ -164,7 +169,9 @@ export default GObject.registerClass(
 			let max = 0;
 
 			this.renderStats.map(k => {
-				max = this.stats[k].max;
+				if (Utils.showMaxLines || !k.startsWith('network-max-')) {
+					max = Math.max(max, this.stats[k].max);
+				}
 				return k;
 			});
 
@@ -174,10 +181,13 @@ export default GObject.registerClass(
 			}
 		}
 
-		private updateMaxLabel() {
+		public updateMaxLabel() {
 			if (this.options.showMax) {
 				this.graphoverlay.label.set_text(
-					Utils.formatMetricPretty(this.max, this.options.units)
+					Utils.formatMetricPretty(
+						this.max * (Utils.bitsPerSecond ? 8 : 1),
+						Utils.bitsPerSecond ? 'b/s' : 'B/s'
+					)
 				);
 			}
 		}
@@ -222,7 +232,7 @@ export default GObject.registerClass(
 		private repaint(area: St.DrawingArea) {
 			const [width, height] = area.get_surface_size();
 			const cr: Cairo.Context = area.get_context() as Cairo.Context;
-			const gridOffset = Math.floor(height / (Constantes.INDICATOR_NUM_GRID_LINES + 1));
+			const gridOffset = height / (Constantes.INDICATOR_NUM_GRID_LINES + 1);
 
 			if (
 				!this.ready ||
@@ -295,8 +305,35 @@ export default GObject.registerClass(
 				return k;
 			});
 
-			for (let index = this.renderStats.length - 1; index >= 0; index--) {
-				const stat = this.stats[this.renderStats[index]];
+			let renders = this.renderStats;
+			const mem_stack = Utils.memStack && this.renderStats[0].startsWith('mem-');
+			if (mem_stack) {
+				this.stack = new Array(this.stats[this.renderStats[0]].scaled.length).fill(0);
+				renders = [
+					'mem-cached-used',
+					'mem-user-used',
+					'mem-shared-used',
+					'mem-buffer-used',
+					'mem-locked-used',
+				];
+			}
+
+			for (let index = renders.length - 1; index >= 0; index--) {
+				const k = renders[index];
+
+				if (Utils.debugMode) {
+					const scaled = this.stats[k].scaled[this.stats[k].scaled.length - 1];
+					const value = this.stats[k].values[this.stats[k].values.length - 1];
+					console.log('==> ' + index + ': ' + k + ' = ' + value + ' / ' + scaled);
+					console.log('  |--> memStack.....: ' + Utils.memStack);
+					console.log('  |--> mem_stack....: ' + mem_stack);
+					console.log('  |--> showMaxLines.: ' + Utils.showMaxLines);
+					console.log('  |--> bitsPerSecond: ' + Utils.bitsPerSecond);
+				}
+
+				if (!Utils.showMaxLines && k.startsWith('network-max-')) continue;
+
+				const stat = this.stats[k];
 				const outlineColor = this.lookupColor(stat.color, stat.cairo_color);
 
 				/*Utils.debug(
@@ -309,11 +346,16 @@ export default GObject.registerClass(
 
 				if (index === 0 || this.options.fillAll) {
 					// Render the first dataset's fill
-					this.plotDataSet(cr, height, stat.scaled);
-
-					cr.lineTo(stat.scaled.length - 1, height);
-					cr.lineTo(0, height);
-					cr.closePath();
+					if (mem_stack) {
+						this.last_stack = this.stack.slice();
+						this.stack.forEach((_, i) => (this.stack[i] += stat.scaled[i]));
+						this.plotDataSet(cr, height, this.stack);
+						this.closeStack(cr, height, this.last_stack);
+					} else {
+						this.plotDataSet(cr, height, stat.scaled);
+						cr.lineTo(stat.scaled.length - 1, height);
+						cr.lineTo(0, height);
+					}
 
 					cr.setSourceRGBA(
 						outlineColor.red,
@@ -322,11 +364,12 @@ export default GObject.registerClass(
 						outlineColor.alpha * 0.2
 					);
 
+					cr.closePath();
 					cr.fill();
 				}
 
 				// Render the data points
-				this.plotDataSet(cr, height, stat.scaled);
+				this.plotDataSet(cr, height, mem_stack ? this.stack : stat.scaled);
 
 				cr.setSourceRGBA(
 					outlineColor.red,
@@ -345,6 +388,15 @@ export default GObject.registerClass(
 			cr.moveTo(0, (1 - (values[0] || 0)) * height);
 
 			for (let k = 1; k < values.length; ++k) {
+				cr.lineTo(k, (1 - values[k]) * height);
+			}
+		}
+
+		private closeStack(cr: Cairo.Context, height: number, values: number[]) {
+			let k = values.length - 1;
+			cr.lineTo(k, (1 - (values[k] || 0)) * height);
+
+			for (k--; k > -1; k--) {
 				cr.lineTo(k, (1 - values[k]) * height);
 			}
 		}

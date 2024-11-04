@@ -21,9 +21,35 @@ const GeneralPrefsPage = GObject.registerClass(
                 active: Utils.debugMode,
             });
 
+            const maxButton = new Adw.SwitchRow({
+                title: _('Show maximum lines in network graphic'),
+                active: Utils.showMaxLines,
+            });
+
+            const memStackButton = new Adw.SwitchRow({
+                title: _('Show memory graphic in stack format'),
+                active: Utils.memStack,
+            });
+
+            const bitsPerSecondButton = new Adw.SwitchRow({
+                title: _('Show bits/second (off = bytes/second)'),
+                active: Utils.bitsPerSecond,
+            });
+
             settings.bind('debug-mode', debugButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+            settings.bind('show-max-lines', maxButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+            settings.bind('mem-stack', memStackButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+            settings.bind(
+                'bits-per-second',
+                bitsPerSecondButton,
+                'active',
+                Gio.SettingsBindFlags.DEFAULT
+            );
 
             group.add(debugButton);
+            group.add(maxButton);
+            group.add(memStackButton);
+            group.add(bitsPerSecondButton);
             this.add(group);
         }
     }

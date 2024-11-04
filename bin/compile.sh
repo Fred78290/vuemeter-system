@@ -1,7 +1,7 @@
 #!/bin/bash
 CURDIR=$(dirname $0)
 
-export PATH=$PATH:${CURDIR}/../node_modules
+export PATH=$PATH:${CURDIR}/../node_modules/.bin
 
 clear
 
@@ -16,7 +16,7 @@ DIST_DIR="${EXTENSION_DIR}/dist"
 # Check if schemas are compiled
 if [ ! -f ./schemas/gschemas.compiled ]; then
     command -v glib-compile-schemas >/dev/null 2>&1 || { echo >&2 "glib-compile-schemas is required but it's not installed. Aborting."; exit 1; }
-    
+
     log_message "Compiling schemas..."
     glib-compile-schemas ./schemas
 fi

@@ -8,6 +8,6 @@
     "name": "VueMeter System",
     "description": "System monitor showing CPU and memory usage.",
     "url": "https://github.com/Fred78290/vuemeter-system",
-    "version": 1,
-    "version-name": "1.0.0"
+    "version": 2,
+    "version-name": "1.0.1"
 }
