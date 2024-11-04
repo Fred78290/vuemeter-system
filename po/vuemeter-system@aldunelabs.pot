@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: vuemeter-system 1.0.0\n"
+"Project-Id-Version: vuemeter-system 1.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-29 17:49+0000\n"
+"POT-Creation-Date: 2024-11-04 00:28-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,21 +17,9 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/indicators/cpu.js:17 src/indicators/memory.js:17
-#: src/indicators/network.js:42 src/indicators/swap.js:24
+#: src/indicators/memory.js:17 src/indicators/network.js:44
+#: src/indicators/cpu.js:17 src/indicators/swap.js:24
 msgid "Current:"
-msgstr ""
-
-#: src/indicators/cpu.js:25
-msgid "User CPU usage"
-msgstr ""
-
-#: src/indicators/cpu.js:38
-msgid "System CPU usage"
-msgstr ""
-
-#: src/indicators/cpu.js:51
-msgid "Total CPU usage"
 msgstr ""
 
 #: src/indicators/memory.js:25
@@ -66,16 +54,28 @@ msgstr ""
 msgid "Total RAM present"
 msgstr ""
 
-#: src/indicators/network.js:50 src/indicators/network.js:84
+#: src/indicators/network.js:52 src/indicators/network.js:86
 msgid "Inbound"
 msgstr ""
 
-#: src/indicators/network.js:63 src/indicators/network.js:97
+#: src/indicators/network.js:65 src/indicators/network.js:99
 msgid "Outbound"
 msgstr ""
 
-#: src/indicators/network.js:76
-msgid "Maximum (over 2 hours):"
+#: src/indicators/network.js:78
+msgid "Maximum (decay over 2 hours):"
+msgstr ""
+
+#: src/indicators/cpu.js:25
+msgid "User CPU usage"
+msgstr ""
+
+#: src/indicators/cpu.js:38
+msgid "System CPU usage"
+msgstr ""
+
+#: src/indicators/cpu.js:51
+msgid "Total CPU usage"
 msgstr ""
 
 #: src/indicators/swap.js:32
@@ -100,4 +100,16 @@ msgstr ""
 
 #: prefs.js:13
 msgid "Configure the debug mode of the extension"
+msgstr ""
+
+#: prefs.js:17
+msgid "Show maximum lines in network graphic"
+msgstr ""
+
+#: prefs.js:21
+msgid "Show memory graphic in stack format"
+msgstr ""
+
+#: prefs.js:25
+msgid "Show bits/second (off = bytes/second)"
 msgstr ""

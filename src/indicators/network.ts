@@ -1,3 +1,4 @@
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import GTop from 'gi://GTop';
@@ -41,6 +42,8 @@ export default GObject.registerClass(
 		private _nmclient = new NM.Client();
 		private _gtop = new GTop.glibtop_netload();
 		private _last_time = 0;
+		private units = Utils.bitsPerSecond ? 'b/s' : 'B/s';
+		private unit_factor = Utils.bitsPerSecond ? 8 : 1;
 
 		constructor() {
 			super('VueMeterMonitor.NetworkIndicator');
@@ -82,7 +85,7 @@ export default GObject.registerClass(
 				},
 				{
 					name: 'maximum',
-					label: _('Maximum (over 2 hours):'),
+					label: _('Maximum (decay over 2 hours):'),
 					vue_meter: false,
 					header: true,
 					registre: '',
@@ -116,9 +119,21 @@ export default GObject.registerClass(
 				},
 			];
 
-			this.graph = new HorizontalGraph('NetworkIndicatorGraph', { units: 'b/s' });
+			this.graph = new HorizontalGraph('NetworkIndicatorGraph', {
+				units: Utils.bitsPerSecond ? 'b/s' : 'B/s',
+			});
 
 			this.buildPopup(this.datasetNames, this.graph, 'network');
+
+			Utils.settings?.connect(
+				'changed::bits-per-second',
+				(sender: Gio.Settings, key: string) => {
+					Utils.bitsPerSecond = sender.get_boolean(key);
+					this.units = Utils.bitsPerSecond ? 'b/s' : 'B/s';
+					this.unit_factor = Utils.bitsPerSecond ? 8 : 1;
+					this.graph?.updateMaxLabel();
+				}
+			);
 
 			this._nmclient?.connect('device-added', this._update_iface_list.bind(this));
 			this._nmclient?.connect('device-removed', this._update_iface_list.bind(this));
@@ -167,11 +182,6 @@ export default GObject.registerClass(
 					this._last[propName] = accum[propName];
 				}
 
-				/* Convert traffic to bits per second */
-				// TODO: Create option for bits/bytes shown in graph.
-				this._usage.bytes_in *= 8;
-				this._usage.bytes_out *= 8;
-
 				/* exponential decay over around 2 hours at 250 interval */
 				let firstRun = true;
 
@@ -189,8 +199,8 @@ export default GObject.registerClass(
 				}
 
 				if (firstRun) {
-					this._previous.bytes_in = 56 * 1024;
-					this._previous.bytes_out = 56 * 1024;
+					this._previous.bytes_in = 1024;
+					this._previous.bytes_out = 1024;
 				} else {
 					for (const dataset of this.datasetNames) {
 						if (dataset.header === false) {
@@ -219,7 +229,10 @@ export default GObject.registerClass(
 								this.graph?.addDataPoint(keyName, value);
 							}
 
-							const strValue = '%sb/s'.format(Utils.formatMetricPretty(value));
+							const strValue = Utils.formatMetricPretty(
+								value * this.unit_factor,
+								this.units
+							);
 
 							this.currentValues[dataset.name].set_text(strValue);
 						}

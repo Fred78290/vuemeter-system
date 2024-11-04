@@ -10,6 +10,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import HorizontalGraph from './horizontalgraph.js';
 import { Color, Constantes, Dictionary } from './types.js';
 import Utils from './utils.js';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 export type IndicatorOptions = {
 	updateInterval: number;
@@ -134,7 +135,7 @@ export default GObject.registerClass(
 			this.box.add_child(this.drawing_area);
 			this.box.connect('notify::visible', this.onVisibilityChanged.bind(this));
 			this.box.connect('style-changed', this.updateStyles.bind(this));
-			this.box.connect('button-press-event', this.showSystemMonitor.bind(this));
+			this.box.connect('button-press-event', this.showSystemMonitorOrPrefs.bind(this));
 
 			this.dropdownLayout = new Clutter.GridLayout();
 			this.dropdown = new St.Widget({
@@ -271,7 +272,13 @@ export default GObject.registerClass(
 			return true;
 		}
 
-		private showSystemMonitor(): boolean {
+		private showSystemMonitorOrPrefs(_actor: Clutter.Actor, event: Clutter.Event): boolean {
+			if (event.get_button() !== 1) {
+				const extension = Extension.lookupByURL(import.meta.url);
+				if (extension) extension.openPreferences();
+				return Clutter.EVENT_PROPAGATE;
+			}
+
 			const appSys = Shell.AppSystem.get_default();
 			const systemMonitorSignature = [
 				'org.gnome.SystemMonitor.desktop',

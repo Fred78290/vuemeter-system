@@ -47,12 +47,15 @@ rm -rf "vuemeter-system@aldunelabs.com.shell-extension.zip"
 # Clean up build directory
 rm -rf "${BUILD_DIR}"
 
+# Install packages
+npm install
+export PATH="$PATH:$EXTENSION_DIR/node_modules/.bin"
+
 # Check if tsc is installed
 command -v tsc >/dev/null 2>&1 || { log_message "Error: tsc is required but it's not installed. Aborting."; exit 1; }
 
 # Compile TypeScript
 log_message "Building typescript files..."
-npm install
 tsc
 
 # Check for errors
@@ -132,7 +135,7 @@ popd
 # Check for errors
 if [ $? -ne 0 ]; then
     log_message "Failed to pack the extension"
-    
+
 #   rm -rf "${DIST_DIR}"
     exit 1
 fi

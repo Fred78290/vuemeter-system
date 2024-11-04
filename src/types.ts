@@ -20,7 +20,7 @@ export class Constantes {
 	static readonly DEFAULT_STATS_COLOR: Color = { red: 0, green: 0.74, blue: 0.94, alpha: 1.0 };
 
 	static readonly INDICATOR_UPDATE_INTERVAL = 250;
-	static readonly INDICATOR_NUM_GRID_LINES = 8;
+	static readonly INDICATOR_NUM_GRID_LINES = 7;
 	static readonly ITEM_LABEL_SHOW_TIME = 0.15;
 	static readonly ITEM_LABEL_HIDE_TIME = 0.1;
 	static readonly ITEM_HOVER_TIMEOUT = 300;
@@ -28,6 +28,9 @@ export class Constantes {
 
 export const globalSettingsKeys = [
 	'debug-mode',
+	'show-max-lines',
+	'mem-stack',
+	'btis-per-second',
 	'queued-pref-category',
 	'current-profile',
 	'profiles',

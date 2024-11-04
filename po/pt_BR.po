@@ -1,122 +1,116 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2024 Fred78290
+# Copyright (C) YEAR Fred78290
 # This file is distributed under the same license as the vuemeter-system package.
-# FIRST AUTHOR <frederic.boltz@gmail.com>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: vuemeter-system 1\n"
+"Project-Id-Version: vuemeter-system 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-03 23:53-0300\n"
-"PO-Revision-Date: 2024-10-21 12:23+0200\n"
-"Last-Translator: Fred78290 <frederic.boltz@gmail.com>\n"
-"Language-Team: Fred78290 <frederic.boltz@gmail.com>\n"
-"Language: fr_FR\n"
+"PO-Revision-Date: 2024-11-02 13:43-0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
 
 #: src/indicators/memory.js:17 src/indicators/network.js:44
 #: src/indicators/cpu.js:17 src/indicators/swap.js:24
 msgid "Current:"
-msgstr "En cours:"
+msgstr "Atual:"
 
 #: src/indicators/memory.js:25
 msgid "Total memory usage"
-msgstr "Mémoire totale"
+msgstr "Memória usada total"
 
 #: src/indicators/memory.js:38
 msgid "Total buffer usage"
-msgstr "Mémoire bufferisée"
+msgstr "Memória usada para buffer"
 
 #: src/indicators/memory.js:51
 msgid "Total shared usage"
-msgstr "Utilisatation totale de la mémoire partagée"
+msgstr "Memória usada para compartilhado"
 
 #: src/indicators/memory.js:64
 msgid "Total cache usage"
-msgstr "Mémoire cachée"
+msgstr "Memória usada para cache"
 
 #: src/indicators/memory.js:77
 msgid "Total user usage"
-msgstr "Mémoire utilisateur"
+msgstr "Memória usada pelo usuário"
 
 #: src/indicators/memory.js:90
 msgid "Total locked usage"
-msgstr "Mémoire vérrouillée"
+msgstr "Memória usada bloqueada"
 
 #: src/indicators/memory.js:103
 msgid "Total free usage"
-msgstr "Mémoire libre"
+msgstr "Memória não usada"
 
 #: src/indicators/memory.js:116
 msgid "Total RAM present"
-msgstr "Mémoire présente"
+msgstr "Memória RAM total"
 
 #: src/indicators/network.js:52 src/indicators/network.js:86
 msgid "Inbound"
-msgstr "Entrant"
+msgstr "Entrada"
 
 #: src/indicators/network.js:65 src/indicators/network.js:99
 msgid "Outbound"
-msgstr "Sortant"
+msgstr "Saída"
 
 #: src/indicators/network.js:78
 msgid "Maximum (decay over 2 hours):"
-msgstr "Maximum (décroissance sur 2 heures):"
+msgstr "Máximo (decaimento ao longo de 2 horas):"
 
 #: src/indicators/cpu.js:25
 msgid "User CPU usage"
-msgstr "Usage utilisateur du CPU"
+msgstr "CPU usada pelo usuário"
 
 #: src/indicators/cpu.js:38
 msgid "System CPU usage"
-msgstr "Usage système du CPU"
+msgstr "CPU usada pelo sistema"
 
 #: src/indicators/cpu.js:51
 msgid "Total CPU usage"
-msgstr "Utilisation total du CPU"
+msgstr "Total de CPU usada"
 
 #: src/indicators/swap.js:32
 msgid "Total swap usage"
-msgstr "Utilisatation du swap"
+msgstr "Total de SWAP usada"
 
 #: src/indicators/swap.js:45
 msgid "Pagein swap usage"
-msgstr "Nombre de pages en entrée"
+msgstr "Uso de entrada na SWAP"
 
 #: src/indicators/swap.js:58
 msgid "Pageout swap usage"
-msgstr "Nombre de pages en sortie"
+msgstr "Uso de saída na SWAP"
 
 #: prefs.js:8
 msgid "General preferences"
-msgstr "Préférences générales"
+msgstr "Preferências gerais"
 
 #: prefs.js:10
 msgid "General"
-msgstr "Général"
+msgstr "Geral"
 
 #: prefs.js:13
 msgid "Configure the debug mode of the extension"
-msgstr "Configure le mode debug pour l'extension"
+msgstr "Ativar o modo debug da extensão"
 
 #: prefs.js:17
 msgid "Show maximum lines in network graphic"
-msgstr "Afficher les lignes maximales dans le graphique du réseau"
+msgstr "Mostrar linhas de máximo no gráfico de rede"
 
 #: prefs.js:21
 msgid "Show memory graphic in stack format"
-msgstr "Afficher le graphique de mémoire au format pile"
+msgstr "Mostrar gráfico de memória empilhado"
 
 #: prefs.js:25
 msgid "Show bits/second (off = bytes/second)"
-msgstr "Afficher les bits/seconde (désactivé = octets/seconde)"
-
-#, fuzzy
-#~ msgid "Debug"
-#~ msgstr "Debug"
-
-#~ msgid "Debug Mode"
-#~ msgstr "Debug Mode"
+msgstr "Mostrar bits/segundo (desligado = bytes/segundo)"

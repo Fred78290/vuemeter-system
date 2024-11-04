@@ -12,6 +12,9 @@ export default class Utils {
 	static HEADER = 'vuemeter-system';
 
 	static debugMode = false;
+	static showMaxLines = true;
+	static memStack = false;
+	static bitsPerSecond = true;
 	static extension: Extension | ExtensionPreferences | null;
 	static metadata: ExtensionMetadata | null;
 	static settings: Gio.Settings | null;
@@ -37,6 +40,9 @@ export default class Utils {
 		Config.settings = settings;
 
 		Utils.debugMode = Config.get_boolean('debug-mode');
+		Utils.showMaxLines = Config.get_boolean('show-max-lines');
+		Utils.memStack = Config.get_boolean('mem-stack');
+		Utils.bitsPerSecond = Config.get_boolean('bits-per-second');
 
 		if (service === 'extension') {
 			Utils.settings.connect('changed::debug-mode', (sender: Gio.Settings, key: string) => {
@@ -52,6 +58,24 @@ export default class Utils {
 			if (this.debugMode) {
 				this.clean_logFile();
 			}
+
+			Utils.settings.connect(
+				'changed::show-max-lines',
+				(sender: Gio.Settings, key: string) => {
+					this.showMaxLines = sender.get_boolean(key);
+				}
+			);
+
+			Utils.settings.connect('changed::mem-stack', (sender: Gio.Settings, key: string) => {
+				this.memStack = sender.get_boolean(key);
+			});
+
+			Utils.settings.connect(
+				'changed::bits-per-second',
+				(sender: Gio.Settings, key: string) => {
+					this.bitsPerSecond = sender.get_boolean(key);
+				}
+			);
 		}
 	}
 
