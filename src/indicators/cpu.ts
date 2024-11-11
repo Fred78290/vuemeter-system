@@ -43,7 +43,7 @@ export default GObject.registerClass(
 				{
 					name: 'sys',
 					label: _('System CPU usage'),
-					vue_meter: true,
+					vue_meter: false,
 					header: false,
 					registre: 'xcpu_sys',
 					color: Utils.fromStyles({
@@ -56,7 +56,7 @@ export default GObject.registerClass(
 				{
 					name: 'total',
 					label: _('Total CPU usage'),
-					vue_meter: true,
+					vue_meter: false,
 					header: false,
 					registre: 'xcpu_total',
 					color: Utils.fromStyles({
@@ -187,14 +187,14 @@ export default GObject.registerClass(
 						);
 
 						const statValue: IndicatorStatValue = {
-							visible: dataset.vue_meter,
+							visible: dataset.vue_meter || dataset.name === 'total',
 							//value: Math.min(1, (index + 1) * 0.25),
 							value: Math.max(reading, decayed_value),
 							color: `cpu-${dataset.name}-color`,
 							cairo_color: dataset.color,
 						};
 
-						if (dataset.vue_meter) {
+						if (statValue.visible) {
 							statValues.values.push(statValue);
 						}
 
