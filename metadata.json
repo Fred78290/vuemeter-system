@@ -1,5 +1,5 @@
 {
-    "shell-version": ["46", "47"],
+    "shell-version": ["47", "48"],
     "uuid": "vuemeter-system@aldunelabs.com",
     "extension-id": "vuemeter-system",
     "settings-schema": "org.gnome.shell.extensions.vuemeter-system",

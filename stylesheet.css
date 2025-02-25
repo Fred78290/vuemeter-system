@@ -2,14 +2,14 @@
     grid-color: rgba(111, 111, 111, 0.8);
 
     cpu-color: rgba(99, 189, 246, 1);
-    cpu-total-color: rgba(99, 189, 246, 1);
+    cpu-total-color: -st-accent-color;
     cpu-user-color: rgba(10, 216, 68, 1);
     cpu-sys-color: rgba(255, 20, 20, 1);
 
     mem-user-color: rgba(10, 216, 68, 1);
     mem-cached-color: rgba(90, 90, 40, 1);
     mem-locked-color: rgba(255, 20, 20, 1);
-    mem-used-color: rgba(99, 189, 246, 1);
+    mem-used-color: -st-accent-color;
     mem-free-color: rgba(240, 190, 0, 1);
     mem-buffer-color: rgba(240, 85, 0, 1);
     mem-shared-color: rgba(220, 0, 240, 1);
@@ -18,7 +18,7 @@
     swap-used-warn-color: rgba(240, 190, 0, 1);
     swap-used-bad-color: rgba(240, 85, 0, 1);
 
-    swap-used-color: rgba(99, 189, 246, 1);
+    swap-used-color: -st-accent-color;
     swap-pagein-color: rgba(10, 216, 68, 1);
     swap-pageout-color: rgba(255, 20, 20, 1);
 
@@ -100,7 +100,7 @@
 }
 
 .bg-cpu-total-color {
-    background-color: rgba(99, 189, 246, 1);
+    background-color: -st-accent-color;
 }
 
 .bg-cpu-user-color {
