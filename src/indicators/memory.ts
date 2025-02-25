@@ -166,7 +166,7 @@ export default GObject.registerClass(
 
 			const memInfos: Dictionary<number> = {
 				total: memoryInfos.total,
-				used: memoryInfos.used,
+				used: memoryInfos.used - memoryInfos.cached,
 				free: memoryInfos.free,
 				shared: memoryInfos.shared,
 				buffer: memoryInfos.buffer,
