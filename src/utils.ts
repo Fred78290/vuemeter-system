@@ -4,9 +4,7 @@ import St from 'gi://St';
 import { Extension, ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js';
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 import Config from './config.js';
-import { Color, Dictionary } from './types.js';
-
-type CachedColor = Dictionary<Color>;
+import { Color } from './types.js';
 
 export default class Utils {
 	static HEADER = 'vuemeter-system';
@@ -18,13 +16,11 @@ export default class Utils {
 	static extension: Extension | ExtensionPreferences | null;
 	static metadata: ExtensionMetadata | null;
 	static settings: Gio.Settings | null;
-	private static cachedColor?: Dictionary<CachedColor> = {};
 
 	static release() {
 		Utils.extension = null;
 		Utils.metadata = null;
 		Utils.settings = null;
-		Utils.cachedColor = undefined;
 		Config.settings = undefined;
 	}
 
@@ -198,41 +194,24 @@ export default class Utils {
 
 	static lookupColor(widget: St.Widget, name: string, defaultColor: Color): Color {
 		if (widget.get_stage()) {
-			if (this.cachedColor === undefined) {
-				this.cachedColor = {};
-			}
+			const themeNode = widget.get_theme_node();
+			const [hasColor, color] = themeNode.lookup_color(name, true);
 
-			let cachedColorPerWidget = this.cachedColor[widget.name];
+			if (hasColor) {
+				Utils.debug(
+					`${widget.name}::lookupColor->${this.name}, name:${name} red: ${color.red}, blue: ${color.blue}, green: ${color.green}, alpha:${color.alpha}`
+				);
 
-			if (cachedColorPerWidget === undefined) {
-				cachedColorPerWidget = {};
-				this.cachedColor[widget.name] = cachedColorPerWidget;
-			}
-
-			if (cachedColorPerWidget[name]) {
-				defaultColor = cachedColorPerWidget[name];
+				defaultColor = {
+					red: color.red / 255.0,
+					blue: color.blue / 255.0,
+					green: color.green / 255.0,
+					alpha: color.alpha / 255.0,
+				};
 			} else {
-				const themeNode = widget.get_theme_node();
-				const [hasColor, color] = themeNode.lookup_color(name, true);
-
-				if (hasColor) {
-					Utils.debug(
-						`${widget.name}::lookupColor->${this.name}, name:${name} red: ${color.red}, blue: ${color.blue}, green: ${color.green}, alpha:${color.alpha}`
-					);
-
-					defaultColor = {
-						red: color.red / 255.0,
-						blue: color.blue / 255.0,
-						green: color.green / 255.0,
-						alpha: color.alpha / 255.0,
-					};
-
-					cachedColorPerWidget[name] = defaultColor;
-				} else {
-					Utils.debug(
-						`${widget.name}::lookupColor->${this.name}, name:${name} not found, use red: ${defaultColor.red}, blue: ${defaultColor.blue}, green: ${defaultColor.green}, alpha:${defaultColor.alpha}`
-					);
-				}
+				Utils.debug(
+					`${widget.name}::lookupColor->${this.name}, name:${name} not found, use red: ${defaultColor.red}, blue: ${defaultColor.blue}, green: ${defaultColor.green}, alpha:${defaultColor.alpha}`
+				);
 			}
 		}
 
