@@ -26,7 +26,7 @@ assignees: 'Fred78290'
 
 <!-- Please complete the following information -->
 
--   **Gnome Stats Pro2 Version**:
+-   **vuemeter-system Version**:
 -   **GNOME Version**:
 -   **Operating System and Version**:
 -   **Other Relevant System Information**:
