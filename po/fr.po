@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vuemeter-system 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-03 23:53-0300\n"
+"POT-Creation-Date: 2025-02-26 10:17+0000\n"
 "PO-Revision-Date: 2024-10-21 12:23+0200\n"
 "Last-Translator: Fred78290 <frederic.boltz@gmail.com>\n"
 "Language-Team: Fred78290 <frederic.boltz@gmail.com>\n"
@@ -17,10 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/indicators/memory.js:17 src/indicators/network.js:44
-#: src/indicators/cpu.js:17 src/indicators/swap.js:24
+#: src/indicators/cpu.js:17 src/indicators/memory.js:17
+#: src/indicators/network.js:44 src/indicators/swap.js:24
 msgid "Current:"
 msgstr "En cours:"
+
+#: src/indicators/cpu.js:25
+msgid "User CPU usage"
+msgstr "Usage utilisateur du CPU"
+
+#: src/indicators/cpu.js:38
+msgid "System CPU usage"
+msgstr "Usage système du CPU"
+
+#: src/indicators/cpu.js:51
+msgid "Total CPU usage"
+msgstr "Utilisation total du CPU"
 
 #: src/indicators/memory.js:25
 msgid "Total memory usage"
@@ -65,18 +77,6 @@ msgstr "Sortant"
 #: src/indicators/network.js:78
 msgid "Maximum (decay over 2 hours):"
 msgstr "Maximum (décroissance sur 2 heures):"
-
-#: src/indicators/cpu.js:25
-msgid "User CPU usage"
-msgstr "Usage utilisateur du CPU"
-
-#: src/indicators/cpu.js:38
-msgid "System CPU usage"
-msgstr "Usage système du CPU"
-
-#: src/indicators/cpu.js:51
-msgid "Total CPU usage"
-msgstr "Utilisation total du CPU"
 
 #: src/indicators/swap.js:32
 msgid "Total swap usage"

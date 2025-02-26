@@ -1,6 +1,6 @@
 {
     "name": "vuemeter-system",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "System monitor showing CPU and memory usage.",
     "type": "module",
     "repository": {
