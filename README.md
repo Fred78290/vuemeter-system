@@ -1,6 +1,6 @@
 # vuemeter-system
 
-vuemeter-system is a full rewrite and port to Gnome version 46 and 47 of the [unmaintened gnome-stats-pro extension](https://github.com/tpenguin/gnome-stats-pro) from Thralling Penguin .
+vuemeter-system is a full rewrite and port to Gnome version 47 and 48 of the [unmaintened gnome-stats-pro extension](https://github.com/tpenguin/gnome-stats-pro) from Thralling Penguin .
 
 ## As the original
 
