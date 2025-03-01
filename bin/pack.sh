@@ -110,7 +110,7 @@ pushd "${DIST_DIR}"
 IFS=. read GNOME_VERSION_MAJOR GNOME_VERSION_MINOR <<< "$(gnome-extensions version)"
 
 # Pack the extension
-if [ ${GNOME_VERSION_MAJOR} -ge 47 ]; then
+if [ ${GNOME_VERSION_MAJOR} -ge 46 ]; then
     gnome-extensions pack --force \
         --podir=./po \
         --schema=./schemas/org.gnome.shell.extensions.vuemeter-system.gschema.xml \

@@ -87,7 +87,7 @@ export default GObject.registerClass(
 				reactive: true,
 				canFocus: true,
 				trackHover: true,
-				styleClass: 'panel-button gsp-color gsp-header',
+				styleClass: Utils.adjustStyleClass('panel-button gsp-color gsp-header'),
 				accessibleName: name,
 				accessibleRole: Atk.Role.MENU,
 				layoutManager: new Clutter.BinLayout(),

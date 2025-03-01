@@ -1,8 +1,9 @@
-import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import St from 'gi://St';
+import Gio from 'gi://Gio';
 import { Extension, ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js';
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import { PACKAGE_VERSION } from 'resource:///org/gnome/shell/misc/config.js';
 import Config from './config.js';
 import { Color } from './types.js';
 
@@ -96,6 +97,18 @@ export default class Utils {
 		} catch (e) {
 			console.error(e);
 		}
+	}
+
+	static adjustStyleClass(style: string): string {
+		const [major, _minor] = PACKAGE_VERSION.split('.').map(s => Number(s));
+		const minVersion = 46;
+		const shellVersion = major;
+
+		for (let i = minVersion; i <= shellVersion; i++) {
+			style += ` gnomeVersion${i}`;
+		}
+
+		return style;
 	}
 
 	static fromStyles(color: Color): Color {
