@@ -11,6 +11,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import HorizontalGraph from './horizontalgraph.js';
 import { Color, Constantes, Dictionary } from './types.js';
 import Utils from './utils.js';
+import { adjustStyleClass } from './style.js';
 
 export type IndicatorOptions = {
 	updateInterval: number;
@@ -87,7 +88,7 @@ export default GObject.registerClass(
 				reactive: true,
 				canFocus: true,
 				trackHover: true,
-				styleClass: 'panel-button gsp-color gsp-header',
+				styleClass: adjustStyleClass('panel-button gsp-color gsp-header'),
 				accessibleName: name,
 				accessibleRole: Atk.Role.MENU,
 				layoutManager: new Clutter.BinLayout(),

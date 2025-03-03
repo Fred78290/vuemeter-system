@@ -32,6 +32,24 @@
     network-bad-color: rgba(240, 85, 0, 1);
 }
 
+/* Gnome 47 accent colour */
+.gsp-color.gnomeVersion47 {
+    cpu-color: -st-accent-color;
+    cpu-total-color: -st-accent-color;
+    mem-used-color: -st-accent-color;
+    swap-used-color: -st-accent-color;
+}
+.gsp-color.gnomeVersion47 .bg-cpu-total-color {
+    background-color: -st-accent-color;
+}
+.gsp-color.gnomeVersion47 .bg-swap-used-color {
+    background-color: rgba(99, 189, 246, 1);
+}
+.gsp-color.gnomeVersion47 .bg-mem-used-color {
+    background-color: rgba(99, 189, 246, 1);
+}
+/* END Gnome 47 accent colour */
+
 .gsp-header {
     padding: 0;
     margin: 0;

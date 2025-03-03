@@ -119,7 +119,7 @@ if [ ${GNOME_VERSION_MAJOR} -ge 46 ]; then
         --extra-source=./LICENSE.md \
         --extra-source=./README.md \
         .
-    # Add all schemas files    
+    # Add all schemas files
     zip -ur vuemeter-system@aldunelabs.com.shell-extension.zip schemas
 else
     gnome-extensions pack --force \
