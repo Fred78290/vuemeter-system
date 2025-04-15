@@ -9,9 +9,9 @@ import St from 'gi://St';
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import HorizontalGraph from './horizontalgraph.js';
+import { adjustStyleClass } from './style.js';
 import { Color, Constantes, Dictionary } from './types.js';
 import Utils from './utils.js';
-import { adjustStyleClass } from './style.js';
 
 export type IndicatorOptions = {
 	updateInterval: number;
@@ -320,10 +320,14 @@ export default GObject.registerClass(
 		}
 
 		public destroy() {
-			Utils.debug(`Indicator::destroy ${this.name}`);
+			if (Utils.debugMode) {
+				Utils.debug(`Indicator::destroy ${this.name}`);
+			}
 
 			if (this.timeout !== 0) {
-				Utils.debug(`Indicator::destroy ${this.name}, clear timeout`);
+				if (Utils.debugMode) {
+					Utils.debug(`Indicator::destroy ${this.name}, clear timeout`);
+				}
 				GLib.source_remove(this.timeout);
 				this.timeout = 0;
 			}

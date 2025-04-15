@@ -1,6 +1,6 @@
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import St from 'gi://St';
-import Gio from 'gi://Gio';
 import { Extension, ExtensionMetadata } from 'resource:///org/gnome/shell/extensions/extension.js';
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 import Config from './config.js';
@@ -198,9 +198,11 @@ export default class Utils {
 			const [hasColor, color] = themeNode.lookup_color(name, true);
 
 			if (hasColor) {
-				Utils.debug(
-					`${widget.name}::lookupColor->${this.name}, name:${name} red: ${color.red}, blue: ${color.blue}, green: ${color.green}, alpha:${color.alpha}`
-				);
+				if (Utils.debugMode) {
+					Utils.debug(
+						`${widget.name}::lookupColor->${this.name}, name:${name} red: ${color.red}, blue: ${color.blue}, green: ${color.green}, alpha:${color.alpha}`
+					);
+				}
 
 				defaultColor = {
 					red: color.red / 255.0,
@@ -209,9 +211,11 @@ export default class Utils {
 					alpha: color.alpha / 255.0,
 				};
 			} else {
-				Utils.debug(
-					`${widget.name}::lookupColor->${this.name}, name:${name} not found, use red: ${defaultColor.red}, blue: ${defaultColor.blue}, green: ${defaultColor.green}, alpha:${defaultColor.alpha}`
-				);
+				if (Utils.debugMode) {
+					Utils.debug(
+						`${widget.name}::lookupColor->${this.name}, name:${name} not found, use red: ${defaultColor.red}, blue: ${defaultColor.blue}, green: ${defaultColor.green}, alpha:${defaultColor.alpha}`
+					);
+				}
 			}
 		}
 

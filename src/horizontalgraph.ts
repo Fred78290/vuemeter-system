@@ -123,7 +123,9 @@ export default GObject.registerClass(
 		public disable() {}
 
 		public destroy() {
-			Utils.debug(`HorizontalGraph::destroy ${this.name}`);
+			if (Utils.debugMode) {
+				Utils.debug(`HorizontalGraph::destroy ${this.name}`);
+			}
 
 			this.ready = false;
 
