@@ -1,5 +1,5 @@
 {
-    "shell-version": ["46", "47", "48"],
+    "shell-version": ["46", "47", "48", "49"],
     "uuid": "vuemeter-system@aldunelabs.com",
     "extension-id": "vuemeter-system",
     "settings-schema": "org.gnome.shell.extensions.vuemeter-system",
@@ -8,6 +8,6 @@
     "name": "VueMeter System",
     "description": "System monitor showing CPU and memory usage.",
     "url": "https://github.com/Fred78290/vuemeter-system",
-    "version": 9,
-    "version-name": "1.0.6"
+    "version": 10,
+    "version-name": "1.0.7"
 }
