@@ -375,7 +375,7 @@ export default GObject.registerClass(
 		private repaint(area: St.DrawingArea) {
 			const cr: Cairo.Context = area.get_context() as Cairo.Context;
 
-			if (Main.overview.visibleTarget || !this.box.get_stage() || !this.box.visible || !cr) {
+			if (!this.box.get_stage() || !this.box.visible || !cr) {
 				return;
 			}
 

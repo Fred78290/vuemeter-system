@@ -238,7 +238,6 @@ export default GObject.registerClass(
 
 			if (
 				!this.ready ||
-				Main.overview.visibleTarget ||
 				!this.get_stage() ||
 				!this.visible ||
 				!cr
