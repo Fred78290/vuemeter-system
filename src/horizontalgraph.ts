@@ -20,7 +20,8 @@ class GraphOverlay {
 		this.actor.hide();
 	}
 
-	destroy() {
+	destroy () {
+		this.label.destroy();
 		this.actor.destroy();
 	}
 }
@@ -120,7 +121,9 @@ export default GObject.registerClass(
 
 		public enable() {}
 
-		public disable() {}
+		public disable() {
+			this.graphoverlay.destroy();
+		}
 
 		public destroy() {
 			if (Utils.debugMode) {
