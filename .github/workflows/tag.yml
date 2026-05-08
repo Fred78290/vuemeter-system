@@ -19,15 +19,15 @@ jobs:
     steps:
     - name: Checkout
       id: checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup Node.js
       id: setup-node
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         cache: npm
 
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: '3.13' 
     - run: pip install gnome-extension-publisher
@@ -63,7 +63,7 @@ jobs:
         suppress_errors: true
 
     - name: Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: ${{ steps.prep.outputs.tag }}
         draft: false
