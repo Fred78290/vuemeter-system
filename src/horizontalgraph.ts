@@ -20,7 +20,7 @@ class GraphOverlay {
 		this.actor.hide();
 	}
 
-	destroy () {
+	destroy() {
 		this.label.destroy();
 		this.actor.destroy();
 	}
@@ -239,13 +239,7 @@ export default GObject.registerClass(
 			const cr: Cairo.Context = area.get_context() as Cairo.Context;
 			const gridOffset = height / (Constantes.INDICATOR_NUM_GRID_LINES + 1);
 
-			if (
-				!this.ready ||
-				!this.get_stage() ||
-				!this.visible ||
-				!cr
-			)
-				return;
+			if (!this.ready || !this.get_stage() || !this.visible || !cr) return;
 
 			if (!this.styleChanged) {
 				this.updateStyles();
