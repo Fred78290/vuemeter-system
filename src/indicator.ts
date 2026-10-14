@@ -333,7 +333,15 @@ export default GObject.registerClass(
 			}
 
 			this.box.destroy();
+
+			// The graph must be destroyed explicitly (not through its dropdown parent)
+			// so that its own destroy() releases its timeout and overlay
 			this.graph?.destroy();
+			this.graph = undefined;
+
+			// The dropdown is added to the chrome, not to this actor
+			this.dropdown.remove_all_transitions();
+			this.dropdown.destroy();
 
 			super.destroy();
 		}
