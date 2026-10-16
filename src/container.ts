@@ -2,6 +2,7 @@ import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import St from 'gi://St';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import Indicator from './indicator.js';
@@ -13,6 +14,9 @@ import NetworkIndicator from './indicators/network.js';
 import SwapIndicator from './indicators/swap.js';
 
 const INDICATORS = [CpuIndicator, MemoryIndicator, SwapIndicator, NetworkIndicator];
+const [shellMajor] = Config.PACKAGE_VERSION.split('.').map(Number);
+// `orientation` replaces `vertical` since GNOME Shell 48 (`vertical` removed in 51)
+const HAS_ST_ORIENTATION = shellMajor >= 48;
 
 export default GObject.registerClass(
 	class VueMeterSystemContainer extends PanelMenu.Button {
@@ -26,14 +30,19 @@ export default GObject.registerClass(
 		constructor() {
 			super(0, 'VueMeterMonitor.Container');
 
-			this.box = new St.BoxLayout({
+			const boxParams: Partial<St.BoxLayout.ConstructorProps> & {
+				orientation?: Clutter.Orientation;
+			} = {
 				style_class: 'gsp-container',
-				vertical: false,
 				xExpand: true,
 				yExpand: true,
 				x_align: Clutter.ActorAlign.START,
 				y_align: Clutter.ActorAlign.FILL,
-			});
+			};
+			// Horizontal is the default on 46/47, where `orientation` does not exist
+			if (HAS_ST_ORIENTATION) boxParams.orientation = Clutter.Orientation.HORIZONTAL;
+
+			this.box = new St.BoxLayout(boxParams);
 
 			this.add_child(this.box);
 			this.remove_style_class_name('panel-button');
