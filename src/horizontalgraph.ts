@@ -20,8 +20,18 @@ class GraphOverlay {
 		this.actor.hide();
 	}
 
+	show() {
+		this.actor.remove_all_transitions();
+		this.actor.show();
+	}
+
+	hide() {
+		this.actor.remove_all_transitions();
+		this.actor.hide();
+	}
+
+	// Destroying the actor also destroys its label and removes it from the chrome
 	destroy() {
-		this.label.destroy();
 		this.actor.destroy();
 	}
 }
@@ -122,7 +132,7 @@ export default GObject.registerClass(
 		public enable() {}
 
 		public disable() {
-			this.graphoverlay.destroy();
+			this.graphoverlay.hide();
 		}
 
 		public destroy() {
@@ -136,6 +146,8 @@ export default GObject.registerClass(
 				GLib.source_remove(this.timeout);
 				this.timeout = 0;
 			}
+
+			this.graphoverlay.destroy();
 
 			super.destroy();
 		}
@@ -408,7 +420,7 @@ export default GObject.registerClass(
 
 		public show() {
 			this.ready = true;
-			this.graphoverlay.actor.show();
+			this.graphoverlay.show();
 			this.graphoverlay.actor.opacity = 0;
 
 			const easeActor: any = this.graphoverlay.actor;
@@ -424,7 +436,7 @@ export default GObject.registerClass(
 
 		public hide() {
 			this.ready = false;
-			this.graphoverlay.actor.hide();
+			this.graphoverlay.hide();
 
 			super.hide();
 		}

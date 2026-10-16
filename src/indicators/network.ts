@@ -44,6 +44,8 @@ export default GObject.registerClass(
 		private _last_time = 0;
 		private units = Utils.bitsPerSecond ? 'b/s' : 'B/s';
 		private unit_factor = Utils.bitsPerSecond ? 8 : 1;
+		private settingsChangedId = 0;
+		private nmclientSignalIds: number[] = [];
 
 		constructor() {
 			super('VueMeterMonitor.NetworkIndicator');
@@ -125,21 +127,36 @@ export default GObject.registerClass(
 
 			this.buildPopup(this.datasetNames, this.graph, 'network');
 
-			Utils.settings?.connect(
-				'changed::bits-per-second',
-				(sender: Gio.Settings, key: string) => {
-					Utils.bitsPerSecond = sender.get_boolean(key);
-					this.units = Utils.bitsPerSecond ? 'b/s' : 'B/s';
-					this.unit_factor = Utils.bitsPerSecond ? 8 : 1;
-					this.graph?.updateMaxLabel();
-				}
-			);
+			this.settingsChangedId =
+				Utils.settings?.connect(
+					'changed::bits-per-second',
+					(sender: Gio.Settings, key: string) => {
+						Utils.bitsPerSecond = sender.get_boolean(key);
+						this.units = Utils.bitsPerSecond ? 'b/s' : 'B/s';
+						this.unit_factor = Utils.bitsPerSecond ? 8 : 1;
+						this.graph?.updateMaxLabel();
+					}
+				) ?? 0;
 
-			this._nmclient?.connect('device-added', this._update_iface_list.bind(this));
-			this._nmclient?.connect('device-removed', this._update_iface_list.bind(this));
+			this.nmclientSignalIds = [
+				this._nmclient.connect('device-added', this._update_iface_list.bind(this)),
+				this._nmclient.connect('device-removed', this._update_iface_list.bind(this)),
+			];
 
 			this._update_iface_list();
 			this.enable();
+		}
+
+		public destroy() {
+			if (this.settingsChangedId) {
+				Utils.settings?.disconnect(this.settingsChangedId);
+				this.settingsChangedId = 0;
+			}
+
+			this.nmclientSignalIds.forEach(id => this._nmclient.disconnect(id));
+			this.nmclientSignalIds = [];
+
+			super.destroy();
 		}
 
 		_update_iface_list() {
